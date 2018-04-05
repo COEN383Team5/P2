@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "FCFS.h"
 #include "ProcInfo.h"
+#include "FCFS.h"
+#include "SJF.h"
 
 // this is (1000+10)/2
 #define MAX_PROCS 1000
-#define procsToMake 505
 #define desiredQuanta 100
 
 typedef struct Processes {
@@ -25,7 +25,8 @@ Processes *getProcesses() {
     float summedTotalRunTime = 0;
     Processes *retval = (Processes *)malloc(sizeof(Processes));
     retval->procs = (ProcInfo *)malloc(MAX_PROCS*sizeof(ProcInfo));
-    for(i = 0; i < procsToMake && summedTotalRunTime < desiredQuanta; i++) {
+    for(i = 0; i < MAX_PROCS && summedTotalRunTime < desiredQuanta; i++) {
+    //for(i = 0; i < MAX_PROCS; i++) {
         retval->procs[i].id = i+1;
         retval->procs[i].arrivalTime = (rand()%100000)/1000.0;
         retval->procs[i].totalRunTime = (rand()%100+1)/10.0;
@@ -42,11 +43,12 @@ int main(int argc, char *argv[]) {
     srand(time(0));
     Processes *processes = getProcesses();
 
-    ProcInfo *procs = processes->procs;
-    sortByArrivalTime(&procs, processes->numProcs);
+    sortByArrivalTime(&processes->procs, processes->numProcs);
     
-    doFCFS(procs, processes->numProcs);
+    doFCFS(processes->procs, processes->numProcs);
+    printf("\n");
+    doSJF(processes->procs, processes->numProcs);
 
-    free(procs);
+    free(processes->procs);
     free(processes);
 }

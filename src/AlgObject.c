@@ -64,7 +64,7 @@ void printResults(AlgObject *a) {
     }
 }
 
-void giveQuanta(AlgObject *a, int i) {
+void giveQuantaNonPremptive(AlgObject *a, int i) {
 	a->timeChart[a->timeChartIndex++] = a->started[i]->id;
 	a->started[i]->completedRunTime++;
 	a->started[i]->totalWaitTime += a->timeChartIndex-a->started[i]->lastRunTime;

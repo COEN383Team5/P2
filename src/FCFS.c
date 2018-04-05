@@ -1,7 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
 #include "FCFS.h"
 #include "AlgObject.h"
 
@@ -17,7 +14,7 @@ void doFCFS(ProcInfo *procs, int numProcs) {
     while(a->startedIndex > 0) {
         // there are some processes that need to finish executing
         for(i = 0; i < a->startedIndex; i++) {
-            giveQuanta(a, i);
+            giveQuantaNonPremptive(a, i);
         }
     }
     printResults(a);

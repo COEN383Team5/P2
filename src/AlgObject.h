@@ -46,6 +46,6 @@ void printResults(AlgObject *a);
  * @param i
  *      the index in a->started[i] for the proc that is going to get a quanta
  */
-void giveQuanta(AlgObject *a, int i);
+void giveQuantaNonPremptive(AlgObject *a, int i);
 
 #endif
