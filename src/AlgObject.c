@@ -28,7 +28,7 @@ void cleanupAlgObject(AlgObject *a) {
     free(a);
 }
 
-void first100NoPrempt(AlgObject *a) {
+void first100(AlgObject *a) {
     int i;
     // do 100 quanta or give every process a turn, whichever is fewer quanta
     for(i = 0; i < 100 && a->unstartedIndex+1 < a->numProcs; i++) {

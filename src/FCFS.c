@@ -12,7 +12,7 @@ void doFCFS(ProcInfo *procs, int numProcs) {
     printf("Starting first come first serve algorithm\n\n");
     printProcs(procs, numProcs, stdout);
     
-    first100NoPrempt(a);
+    first100(a);
 
     while(a->startedIndex > 0) {
         // there are some processes that need to finish executing

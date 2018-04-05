@@ -32,7 +32,7 @@ void cleanupAlgObject(AlgObject *a);
  * @param a
  *      an AlgObject created by createAlgObject(2)
  */
-void first100NoPrempt(AlgObject *a);
+void first100(AlgObject *a);
 
 /* prints the a->timeChart and timing information for the procs in a
  * @param a
