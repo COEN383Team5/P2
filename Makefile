@@ -1,12 +1,13 @@
 CXX			:= gcc
 CXXFLAGS	:= -Wall -g
+SRCS		:= $(patsubst src/%.c, %.c, $(wildcard src/*.c))
 OBJ_DIR		:= obj/
 BIN_DIR		:= bin/
 VPATH		:= src:${OBJ_DIR}
 
-P2: P2.o
+P2: $(SRCS:.c=.o)
 	@mkdir -p $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)P2 $(OBJ_DIR)P2.o -lm
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)$@ $(patsubst %.c, $(OBJ_DIR)%.o, $(SRCS)) -lm
 .PHONY: P2
 
 clean:
