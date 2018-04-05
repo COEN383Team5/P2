@@ -20,7 +20,7 @@ AlgObject *createAlgObject(ProcInfo *procs, int numProcs) {
     return a;
 }
 
-cleanupAlgObject(AlgObject *a) {
+void cleanupAlgObject(AlgObject *a) {
     free(a->unstarted);
     free(a->started);
     free(a->finished);
@@ -65,5 +65,17 @@ void printResults(AlgObject *a) {
 }
 
 void giveQuanta(AlgObject *a, int i) {
-
+	a->timeChart[a->timeChartIndex++] = a->started[i]->id;
+	a->started[i]->completedRunTime++;
+	a->started[i]->totalWaitTime += a->timeChartIndex-a->started[i]->lastRunTime;
+	a->started[i]->lastRunTime = a->timeChartIndex;
+	if(a->started[i]->totalRunTime <= a->started[i]->completedRunTime) {
+		// this process has finished so remove it from started
+		// without messing up the order of started
+		a->finished[a->finishedIndex++] = a->started[i];
+		if(i+1 < a->startedIndex) {
+			memmove(&a->started[i], &a->started[i+1],a->startedIndex-(i+1));
+		}   
+		a->started[--a->startedIndex] = 0;
+	}
 }
