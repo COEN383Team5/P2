@@ -31,5 +31,5 @@ void doSRT(ProcInfo *procs, int numProcs) {
         giveQuantaPremptive(a, sjp);
     }
     printResults(a);
-    cleanupAlgObject(a);
+    cleanupAlgObject(&a);
 }

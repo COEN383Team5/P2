@@ -31,5 +31,5 @@ void doSJF(ProcInfo *procs, int numProcs) {
         giveQuantaNonPremptive(a, sjp);
     }
     printResults(a);
-    cleanupAlgObject(a);
+    cleanupAlgObject(&a);
 }

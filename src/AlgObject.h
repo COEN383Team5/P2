@@ -24,7 +24,7 @@ AlgObject *createAlgObject(ProcInfo *procs, int numProcs);
 
 /* frees all the relavent memory in a
  * @param a
- *      a heap allocated AlgObject created by createAlgObject(2)
+ *      a reference to a heap allocated AlgObject created by createAlgObject(2)
  */
 void cleanupAlgObject(AlgObject *a);
 

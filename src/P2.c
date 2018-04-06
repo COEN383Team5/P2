@@ -34,7 +34,7 @@ Processes *getProcesses() {
         retval->procs[i].totalRunTime = (rand()%100+1)/10.0;
         retval->procs[i].completedRunTime = 0;
         retval->procs[i].totalWaitTime = 0;
-        retval->procs[i].priority = rand()%4+1;
+        retval->procs[i].priority = rand()%NUM_PRIORITIES+1;
         summedTotalRunTime += retval->procs[i].totalRunTime;
     }
     retval->numProcs = i;
@@ -56,5 +56,7 @@ int main(int argc, char *argv[]) {
     doRR(processes->procs, processes->numProcs);
 
     free(processes->procs);
+    processes->procs = NULL;
     free(processes);
+    processes = NULL;
 }

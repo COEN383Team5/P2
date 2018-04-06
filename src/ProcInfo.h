@@ -1,6 +1,8 @@
 #ifndef PROCINFO_H
 #define PROCINFO_H
 
+#define NUM_PRIORITIES 4
+
 typedef struct ProcInfo {
     int id; 
     float arrivalTime;

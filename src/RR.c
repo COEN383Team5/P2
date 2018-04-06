@@ -18,5 +18,5 @@ void doRR(ProcInfo *procs, int numProcs) {
         }
     }
     printResults(a);
-    cleanupAlgObject(a);
+    cleanupAlgObject(&a);
 }

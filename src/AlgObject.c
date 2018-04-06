@@ -21,12 +21,19 @@ AlgObject *createAlgObject(ProcInfo *procs, int numProcs) {
     return a;
 }
 
-void cleanupAlgObject(AlgObject *a) {
-    free(a->unstarted);
-    free(a->started);
-    free(a->finished);
-    free(a->timeChart);
-    free(a);
+void cleanupAlgObject(AlgObject **a) {
+    if(*a != NULL) {
+        free((*a)->unstarted);
+        (*a)->unstarted = NULL;
+        free((*a)->started);
+        (*a)->started = NULL;
+        free((*a)->finished);
+        (*a)->finished = NULL;
+        free((*a)->timeChart);
+        (*a)->timeChart = NULL;
+        free(*a);
+        *a = NULL;
+    }
 }
 
 void first100(AlgObject *a, int preemptive) {
