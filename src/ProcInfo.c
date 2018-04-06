@@ -5,9 +5,9 @@
 int partition(ProcInfo **procs, int low, int high) {
     int j, i = (low-1);
     ProcInfo temp;
-    float pivot = (*procs)[high].arrivalTime;
+    double pivotVal = (*procs)[high].arrivalTime;
     for(j = low; j < high; j++) {
-        if((*procs)[j].arrivalTime <= pivot)  {
+        if((*procs)[j].arrivalTime <= pivotVal)  {
             i++;
             temp = (*procs)[j];
             (*procs)[j] = (*procs)[i];

@@ -7,7 +7,7 @@
 
 typedef struct RunInfo {
     int *timeChart;
-    float runTime;
+    double runTime;
     int iters;
 } RunInfo;
 

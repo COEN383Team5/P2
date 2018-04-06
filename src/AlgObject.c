@@ -38,7 +38,7 @@ void cleanupAlgObject(AlgObject **a) {
 
 void first100(AlgObject *a, int preemptive) {
     int i;
-    float timeLeftForProc;
+    double timeLeftForProc;
     // do 100 quanta or give every process a turn, whichever is fewer quanta
     for(i = 0; i < 100 && a->unstartedIndex+1 < a->numProcs; i++) {
         a->timeChart[a->timeChartIndex++] = a->unstarted[a->unstartedIndex].id; 
@@ -73,7 +73,7 @@ void first100Preemptive(AlgObject *a) {
 
 void printResults(AlgObject *a) {
     int i;
-    float waitTimeTemp, turnAroundTemp;
+    double waitTimeTemp, turnAroundTemp;
     printf("\nTime chart:\n");
     for(i = 0; i < a->timeChartIndex; i++) {
         printf("%d ", a->timeChart[i]);
@@ -81,7 +81,7 @@ void printResults(AlgObject *a) {
     printf("\n\n");
     printf("Stats for procs:\n");
     for(i = 0; i < a->finishedIndex; i++) {
-       waitTimeTemp = ((float)a->finished[i]->totalWaitTime)/ceil(a->finished[i]->totalRunTime);
+       waitTimeTemp = ((double)a->finished[i]->totalWaitTime)/ceil(a->finished[i]->totalRunTime);
        turnAroundTemp = a->finished[i]->totalWaitTime+a->finished[i]->completedRunTime;
 
        printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
@@ -90,7 +90,7 @@ void printResults(AlgObject *a) {
 }
 
 void giveQuanta(AlgObject *a, int i, int preemptive) {
-    float timeLeftForProc;
+    double timeLeftForProc;
 	a->timeChart[a->timeChartIndex++] = a->started[i]->id;
     timeLeftForProc = a->started[i]->totalRunTime-a->started[i]->completedRunTime;
     if(timeLeftForProc < 1 && preemptive) {

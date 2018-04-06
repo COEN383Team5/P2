@@ -1,5 +1,5 @@
 CXX			:= gcc
-CXXFLAGS	:= -Wall -g
+CXXFLAGS	:= -Wall -O3
 SRCS		:= $(patsubst src/%.c, %.c, $(wildcard src/*.c))
 OBJ_DIR		:= obj/
 BIN_DIR		:= bin/

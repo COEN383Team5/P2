@@ -42,8 +42,7 @@ Processes *getProcesses() {
     return retval;
 }
 
-int main(int argc, char *argv[]) {
-    srand(time(0));
+void run() {
     Processes *processes = getProcesses();
 
     sortByArrivalTime(&processes->procs, processes->numProcs);
@@ -64,4 +63,13 @@ int main(int argc, char *argv[]) {
     processes->procs = NULL;
     free(processes);
     processes = NULL;
+}
+
+// TODO add cli args and file logging
+int main(int argc, char *argv[]) {
+    int i;
+    srand(time(0));
+    for(i = 0; i < 5; i++) {
+        run();
+    }
 }

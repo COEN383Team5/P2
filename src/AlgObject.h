@@ -9,7 +9,7 @@ typedef struct AlgObject {
     // timeChart stores in order which processes were allowed to run
     int *timeChart;
     int unstartedIndex, startedIndex, finishedIndex, timeChartIndex, numProcs;
-    float timeSinceStart;
+    double timeSinceStart;
 } AlgObject;
 
 

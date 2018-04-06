@@ -6,10 +6,10 @@
 
 typedef struct ProcInfo {
     int id; 
-    float arrivalTime;
-    float totalRunTime;
+    double arrivalTime;
+    double totalRunTime;
     // completedRunTime is the amount of time that this process has be allowed to run, starts at 0 and ends at >= totalRunTime
-    float completedRunTime;
+    double completedRunTime;
     int totalWaitTime;
     int priority;
     // the last time it started running
