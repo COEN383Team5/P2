@@ -16,6 +16,7 @@ AlgObject *createAlgObject(ProcInfo *procs, int numProcs) {
     a->startedIndex = 0;
     a->finishedIndex = 0;
     a->timeChartIndex = 0;
+    a->timeSinceStart = 0;
     a->numProcs = numProcs;
     return a;
 }
@@ -60,16 +61,24 @@ void printResults(AlgObject *a) {
        waitTimeTemp = ((float)a->finished[i]->totalWaitTime)/ceil(a->finished[i]->totalRunTime);
        turnAroundTemp = a->finished[i]->totalWaitTime+a->finished[i]->completedRunTime;
 
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f %d %f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp, a->finished[i]->completedRunTime, a->finished[i]->totalRunTime); 
+       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
     }
+    printf("Throughput: %.4f processes/quanta\n", numProcs/a->timeSinceStarted);
 }
 
-void giveQuantaNonPremptive(AlgObject *a, int i) {
+void giveQuanta(AlgObject *a, int i, int preemptive) {
+    float timeLeftForProc;
 	a->timeChart[a->timeChartIndex++] = a->started[i]->id;
-	a->started[i]->completedRunTime++;
-    fprintf(stderr, "%d %d %.1f\n", a->started[i]->id, a->started[i]->completedRunTime, a->started[i]->totalRunTime);
-	a->started[i]->totalWaitTime += a->timeChartIndex-a->started[i]->lastRunTime;
-	a->started[i]->lastRunTime = a->timeChartIndex;
+    timeLeftForProc = a->started[i]->totalRunTime-a->started[i]->completedRunTime;
+    if(timeLeftForProc < 1 && preemptive) {
+        a->started[i]->completedRunTime += timeLeftForProc;
+        a->timeSinceStart += timeLeftForProc;
+    } else {
+        a->started[i]->completedRunTime++;
+        a->timeSinceStart += 1;
+    }
+	a->started[i]->totalWaitTime += a->timeSinceStart-a->started[i]->lastRunTime;
+	a->started[i]->lastRunTime = a->timeSinceStart;
 	if(a->started[i]->totalRunTime <= a->started[i]->completedRunTime) {
 		// this process has finished so remove it from started
 		// without messing up the order of started
@@ -79,4 +88,12 @@ void giveQuantaNonPremptive(AlgObject *a, int i) {
 		}   
 		a->started[--a->startedIndex] = 0;
 	}
+}
+
+void giveQuantaNonPremptive(AlgObject *a, int i) {
+    giveQuanta(a, i, 0);
+}
+
+void giveQuantaPremptive(AlgObject *a, int i) {
+    giveQuanta(a, i, 1);
 }

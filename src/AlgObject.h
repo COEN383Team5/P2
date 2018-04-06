@@ -9,6 +9,7 @@ typedef struct AlgObject {
     // timeChart stores in order which processes were allowed to run
     int *timeChart;
     int unstartedIndex, startedIndex, finishedIndex, timeChartIndex, numProcs;
+    float timeSinceStart;
 } AlgObject;
 
 
@@ -40,12 +41,32 @@ void first100(AlgObject *a);
  */
 void printResults(AlgObject *a);
 
-/* gives a->started[i] a quanta and updates the relavent variables
+/* gives a->started[i] some portion of a quanta and updates the relavent variables
+ * @param a
+ *      an AlgObject created by createAlgObject(2)
+ * @param i
+ *      the index in a->started[i] for the proc that is going to get a quanta
+ * @param preemptive
+ *      a boolean that determines whether to preemptively schedule or not
+ */
+void giveQuanta(AlgObject *a, int i, int preemptive);
+
+/* gives a->started[i] a quanta nonpreemtively and updates the relavent variables
+ * calls giveQuanta(3)
  * @param a
  *      an AlgObject created by createAlgObject(2)
  * @param i
  *      the index in a->started[i] for the proc that is going to get a quanta
  */
 void giveQuantaNonPremptive(AlgObject *a, int i);
+
+/* gives a->started[i] a quanta preemtively and updates the relavent variables
+ * calls giveQuanta(3)
+ * @param a
+ *      an AlgObject created by createAlgObject(2)
+ * @param i
+ *      the index in a->started[i] for the proc that is going to get a quanta
+ */
+void giveQuantaPremptive(AlgObject *a, int i);
 
 #endif

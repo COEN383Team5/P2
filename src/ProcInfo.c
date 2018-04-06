@@ -35,15 +35,6 @@ void sortByArrivalTime(ProcInfo **procs, int numProcs) {
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
     int i;
     for(i = 0; i < numProcs; i++) {
-        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tttime %.1f,\tctime %4d,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].totalRunTime, procs[i].completedRunTime, procs[i].priority);
-    }
-}
-
-void printProcsWithStats(ProcInfo *procs, int numProcs, FILE *stream) {
-    int i;
-    for(i = 0; i < numProcs; i++) {
-        printf("%d, %d\n", procs[i].totalWaitTime, procs[i].lastRunTime);
-        int waitTime = procs[i].totalWaitTime/procs[i].lastRunTime;
-        fprintf(stream, "Process id: %3d,\tAverage turnaround time: %4d,\tAverage waiting time: %4d,\tAverage response time: %4d\n", procs[i].id, procs[i].completedRunTime/procs[i].lastRunTime, waitTime, waitTime);
+        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tttime %.1f,\tctime %.4f,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].totalRunTime, procs[i].completedRunTime, procs[i].priority);
     }
 }
