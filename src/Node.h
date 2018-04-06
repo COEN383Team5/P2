@@ -6,7 +6,7 @@
 // A node for a doubly linked list
 typedef struct Node {
 	ProcInfo *proc;
-	Node *next, *prev;
+	struct Node *next, *prev;
 } Node;
 
 // Doubly linked list

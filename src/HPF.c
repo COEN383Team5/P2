@@ -1,10 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
 #include "HPF.h"
-
-typedef struct RunInfo {
-	int *timeChart;
-	float runTime;
-	int iters;
-} RunInfo;
 
 RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive) {
 	RunInfo *retval = (RunInfo *)calloc(1, sizeof(RunInfo));
@@ -27,17 +25,22 @@ RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive) {
 }
 
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
-	RunInfo ri;
+	RunInfo *ri;
 	float timeLeft, waitTimeTemp, turnAroundTemp;
 	ProcInfo *temp, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
 	ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
-	int finishedIndex = 0;
+	int i, finishedIndex = 0;
 	PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
 
 	memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
 
-	printf("Starting highest priority first algorithm\n\n");
-	printProcs(proc, numProcs, stdout);
+	printf("Starting highest priority first algorithm");
+    if(preemptive) {
+        printf(" with preemption\n\n");
+    } else {
+        printf(" without preemption\n\n");
+    }
+	printProcs(procs, numProcs, stdout);
 
 	ri = first100HPF(&procCopy, numProcs, preemptive);
 	fillPriorityQueue(&pq, procCopy, numProcs);
@@ -49,7 +52,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 		if(timeLeft < 1 && preemptive) {
 			temp->totalWaitTime += ri->runTime-temp->lastRunTime;
 			ri->runTime += timeLeft;
-			ri->lastRunTime = ri->runTime;
+			temp->lastRunTime = ri->runTime;
 			temp->completedRunTime += timeLeft;
 		} else {
 			temp->totalWaitTime += ri->runTime-temp->lastRunTime;
@@ -60,7 +63,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 		if(temp->completedRunTime < temp->totalRunTime) {
 			addProc(&pq, temp);
 		} else {
-			finshed[finishedIndex++] = temp; 
+			finished[finishedIndex++] = temp; 
 		}
 		ri->iters++;
 	}

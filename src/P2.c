@@ -7,6 +7,7 @@
 #include "SJF.h"
 #include "SRT.h"
 #include "RR.h"
+#include "HPF.h"
 
 // this is (1000+10)/2
 #define MAX_PROCS 1000
@@ -54,6 +55,10 @@ int main(int argc, char *argv[]) {
     doSRT(processes->procs, processes->numProcs);
     printf("\n");
     doRR(processes->procs, processes->numProcs);
+    printf("\n");
+    doHPF(processes->procs, processes->numProcs, 0);
+    printf("\n");
+    doHPF(processes->procs, processes->numProcs, 1);
 
     free(processes->procs);
     processes->procs = NULL;

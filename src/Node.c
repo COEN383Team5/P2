@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "Node.h"
 
 Queue *initializeQueue() {

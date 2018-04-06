@@ -1,5 +1,6 @@
 #ifndef PROCINFO_H
 #define PROCINFO_H
+#include <stdio.h>
 
 #define NUM_PRIORITIES 4
 

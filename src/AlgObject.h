@@ -26,7 +26,7 @@ AlgObject *createAlgObject(ProcInfo *procs, int numProcs);
  * @param a
  *      a reference to a heap allocated AlgObject created by createAlgObject(2)
  */
-void cleanupAlgObject(AlgObject *a);
+void cleanupAlgObject(AlgObject **a);
 
 /* distributes the first 100 quanta to the processes in a, unless there are not 100 processes
  * in which case it gives each process a turn, adds them to a->started, and the returns

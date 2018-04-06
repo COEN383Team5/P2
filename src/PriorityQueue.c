@@ -1,12 +1,13 @@
+#include <stdlib.h>
 #include "PriorityQueue.h"
 
 PriorityQueue *initializePriorityQueue(int numPriorities) {
 	int i;
 	PriorityQueue *retval = (PriorityQueue *)malloc(sizeof(PriorityQueue));
 	retval->numPriorities = numPriorities;
-	retval->queues = (DLL **)calloc(numPriorities, sizeof(DLL *));
+	retval->queues = (Queue **)calloc(numPriorities, sizeof(Queue *));
 	for(i = 0; i < numPriorities; i++) {
-		retval->queues[i] = initializeDLL();
+		retval->queues[i] = initializeQueue();
 	}
 	return retval;
 }
@@ -15,9 +16,9 @@ void cleanupPriorityQueue(PriorityQueue **pq) {
 	int i;
 	if(*pq != NULL) {
 		for(i = 0; i < (*pq)->numPriorities; i++) {
-			cleanupDLL((*pq)->queues[i]);
+			cleanupQueue(&((*pq)->queues[i]));
 		}
-		free((*pq)->queues)
+		free((*pq)->queues);
 		(*pq)->queues = NULL;
 		free(*pq);
 		*pq = NULL;
@@ -27,11 +28,11 @@ void cleanupPriorityQueue(PriorityQueue **pq) {
 void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs) {
 	int i;
 	for(i = 0; i < numProcs; i++) {
-		addToQueue(&((*pq)->queues[procs[i].priority]), &procs[i]); 
+		addToQueue(&((*pq)->queues[procs[i].priority-1]), &procs[i]); 
 	}
 }
 
-ProcInfo *getNextProc(PrioirtyQueue **pq) {
+ProcInfo *getNextProc(PriorityQueue **pq) {
 	int i;
 	ProcInfo *temp = NULL;
 	for(i = 0; i < (*pq)->numPriorities; i++) {
