@@ -48,4 +48,6 @@ ProcInfo *getNextProc(PriorityQueue **pq);
  */
 void addProc(PriorityQueue **pq, ProcInfo *proc);
 
+void printPQ(PriorityQueue *pq);
+
 #endif

@@ -44,4 +44,6 @@ void addToQueue(Queue **a, ProcInfo *proc);
  */
 ProcInfo *pop(Queue **a);
 
+void printQueue(Queue *a);
+
 #endif

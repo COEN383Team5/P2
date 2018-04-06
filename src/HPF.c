@@ -79,7 +79,8 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
        turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
 
        printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
-       free(finished[i]);
+//       note that this doesn't have to be done because it points to procCopy
+//       free(finished[i]);
        finished[i] = NULL;
     }
     printf("Throughput: %.4f processes/quanta\n", numProcs/ri->runTime);

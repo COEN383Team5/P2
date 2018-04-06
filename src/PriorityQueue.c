@@ -44,5 +44,15 @@ ProcInfo *getNextProc(PriorityQueue **pq) {
 }
 
 void addProc(PriorityQueue **pq, ProcInfo *proc) {
-	addToQueue(&((*pq)->queues[proc->priority]), proc);
+	addToQueue(&((*pq)->queues[proc->priority-1]), proc);
+}
+
+void printPQ(PriorityQueue *pq) {
+    int i;
+    for(i = 0; i < pq->numPriorities; i++) {
+        printf("Priority %d: ", i+1);
+        printQueue(pq->queues[i]);
+        printf("\n");
+    }
+    printf("\n");
 }
