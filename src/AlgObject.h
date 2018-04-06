@@ -33,7 +33,25 @@ void cleanupAlgObject(AlgObject *a);
  * @param a
  *      an AlgObject created by createAlgObject(2)
  */
-void first100(AlgObject *a);
+void first100(AlgObject *a, int preemptive);
+
+/* distributes the first 100 quanta to the processes in a nonpreemptively, 
+ * unless there are not 100 processes
+ * calls first100(2)
+ * in which case it gives each process a turn, adds them to a->started, and the returns
+ * @param a
+ *      an AlgObject created by createAlgObject(2)
+ */
+void first100NonPreemptive(AlgObject *a);
+
+/* distributes the first 100 quanta to the processes in a preemptively, 
+ * unless there are not 100 processes
+ * calls first100(2)
+ * in which case it gives each process a turn, adds them to a->started, and the returns
+ * @param a
+ *      an AlgObject created by createAlgObject(2)
+ */
+void first100Preemptive(AlgObject *a);
 
 /* prints the a->timeChart and timing information for the procs in a
  * @param a

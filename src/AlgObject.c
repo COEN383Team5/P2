@@ -29,12 +29,20 @@ void cleanupAlgObject(AlgObject *a) {
     free(a);
 }
 
-void first100(AlgObject *a) {
+void first100(AlgObject *a, int preemptive) {
     int i;
+    float timeLeftForProc;
     // do 100 quanta or give every process a turn, whichever is fewer quanta
     for(i = 0; i < 100 && a->unstartedIndex+1 < a->numProcs; i++) {
         a->timeChart[a->timeChartIndex++] = a->unstarted[a->unstartedIndex].id; 
-        a->unstarted[a->unstartedIndex].completedRunTime++;
+        timeLeftForProc = a->unstarted[a->unstartedIndex].totalWaitTime-a->unstarted[a->unstartedIndex].completedRunTime;
+        if(timeLeftForProc < 1 && preemptive) {
+            a->unstarted[a->unstartedIndex].completedRunTime += timeLeftForProc;
+            a->timeSinceStart += timeLeftForProc;
+        } else {
+            a->unstarted[a->unstartedIndex].completedRunTime += 1;
+            a->timeSinceStart += 1;
+        }
         a->unstarted[a->unstartedIndex].totalWaitTime += a->timeChartIndex-a->unstarted[a->unstartedIndex].lastRunTime;
         a->unstarted[a->unstartedIndex].lastRunTime = a->timeChartIndex;
         a->started[a->startedIndex++] = &(a->unstarted[a->unstartedIndex]);
@@ -46,6 +54,14 @@ void first100(AlgObject *a) {
         a->unstartedIndex++;
     }
 
+}
+
+void first100NonPreemptive(AlgObject *a) {
+    first100(a, 0);
+}
+
+void first100Preemptive(AlgObject *a) {
+    first100(a, 1);
 }
 
 void printResults(AlgObject *a) {
@@ -63,7 +79,7 @@ void printResults(AlgObject *a) {
 
        printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
     }
-    printf("Throughput: %.4f processes/quanta\n", numProcs/a->timeSinceStarted);
+    printf("Throughput: %.4f processes/quanta\n", a->numProcs/a->timeSinceStart);
 }
 
 void giveQuanta(AlgObject *a, int i, int preemptive) {
@@ -74,7 +90,7 @@ void giveQuanta(AlgObject *a, int i, int preemptive) {
         a->started[i]->completedRunTime += timeLeftForProc;
         a->timeSinceStart += timeLeftForProc;
     } else {
-        a->started[i]->completedRunTime++;
+        a->started[i]->completedRunTime += 1;
         a->timeSinceStart += 1;
     }
 	a->started[i]->totalWaitTime += a->timeSinceStart-a->started[i]->lastRunTime;
