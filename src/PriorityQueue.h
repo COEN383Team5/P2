@@ -1,6 +1,7 @@
 #ifndef PRIORITYQUEUE_H
 #define PRIORITYQUEUE_H
 
+#include <stdio.h>
 #include "Node.h"
 
 typedef struct PriorityQueue {
@@ -48,6 +49,12 @@ ProcInfo *getNextProc(PriorityQueue **pq);
  */
 void addProc(PriorityQueue **pq, ProcInfo *proc);
 
-void printPQ(PriorityQueue *pq);
+/* Convience function that prints the contents of the priority queue
+ * @param pq
+ *      the priority queue to print the contents of
+ * @param stream
+ *      the stream to print to
+ */
+void printPQ(PriorityQueue *pq, FILE *stream);
 
 #endif

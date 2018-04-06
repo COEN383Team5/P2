@@ -44,6 +44,12 @@ void addToQueue(Queue **a, ProcInfo *proc);
  */
 ProcInfo *pop(Queue **a);
 
-void printQueue(Queue *a);
+/* Convience function that prints the contents of the queue
+ * @param a
+ *      the queue to print the contents of
+ * @param stream
+ *      the stream to print to
+ */
+void printQueue(Queue *a, FILE *stream);
 
 #endif

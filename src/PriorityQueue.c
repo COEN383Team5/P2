@@ -47,12 +47,12 @@ void addProc(PriorityQueue **pq, ProcInfo *proc) {
 	addToQueue(&((*pq)->queues[proc->priority-1]), proc);
 }
 
-void printPQ(PriorityQueue *pq) {
+void printPQ(PriorityQueue *pq, FILE *stream) {
     int i;
     for(i = 0; i < pq->numPriorities; i++) {
-        printf("Priority %d: ", i+1);
-        printQueue(pq->queues[i]);
-        printf("\n");
+        fprintf(stream, "Priority %d: ", i+1);
+        printQueue(pq->queues[i], stream);
+        fprintf(stream, "\n");
     }
-    printf("\n");
+    fprintf(stream, "\n");
 }

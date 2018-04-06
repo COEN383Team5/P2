@@ -39,10 +39,10 @@ ProcInfo *pop(Queue **a) {
 	return retval;
 }
 
-void printQueue(Queue *a) {
+void printQueue(Queue *a, FILE *stream) {
     Node *temp = a->head->next;
     while(temp != NULL && temp->proc != NULL) {
-        printf("%d ", temp->proc->id);
+        fprintf(stream, "%d ", temp->proc->id);
         temp = temp->next;
     }
 }
