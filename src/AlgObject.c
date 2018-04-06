@@ -60,13 +60,14 @@ void printResults(AlgObject *a) {
        waitTimeTemp = ((float)a->finished[i]->totalWaitTime)/ceil(a->finished[i]->totalRunTime);
        turnAroundTemp = a->finished[i]->totalWaitTime+a->finished[i]->completedRunTime;
 
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
+       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f %d %f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp, a->finished[i]->completedRunTime, a->finished[i]->totalRunTime); 
     }
 }
 
 void giveQuantaNonPremptive(AlgObject *a, int i) {
 	a->timeChart[a->timeChartIndex++] = a->started[i]->id;
 	a->started[i]->completedRunTime++;
+    fprintf(stderr, "%d %d %.1f\n", a->started[i]->id, a->started[i]->completedRunTime, a->started[i]->totalRunTime);
 	a->started[i]->totalWaitTime += a->timeChartIndex-a->started[i]->lastRunTime;
 	a->started[i]->lastRunTime = a->timeChartIndex;
 	if(a->started[i]->totalRunTime <= a->started[i]->completedRunTime) {
@@ -74,7 +75,7 @@ void giveQuantaNonPremptive(AlgObject *a, int i) {
 		// without messing up the order of started
 		a->finished[a->finishedIndex++] = a->started[i];
 		if(i+1 < a->startedIndex) {
-			memmove(&a->started[i], &a->started[i+1],a->startedIndex-(i+1));
+			memmove(&a->started[i], &a->started[i+1],(a->startedIndex-(i+1))*sizeof(ProcInfo *));
 		}   
 		a->started[--a->startedIndex] = 0;
 	}

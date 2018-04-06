@@ -47,7 +47,7 @@ int main(int argc, char *argv[]) {
     
     doFCFS(processes->procs, processes->numProcs);
     printf("\n");
-    doSJF(processes->procs, processes->numProcs);
+//    doSJF(processes->procs, processes->numProcs);
 
     free(processes->procs);
     free(processes);
