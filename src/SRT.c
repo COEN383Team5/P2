@@ -30,6 +30,6 @@ void doSRT(ProcInfo *procs, int numProcs) {
         sjp = getProcWithShortestRemainingTime(a);
         giveQuantaPremptive(a, sjp);
     }
-    printResults(a);
+    printResults(a->finished, a->finishedIndex, a->timeIndex, a->timeChartIndex, a->numProcs, a->timeSinceStart);
     cleanupAlgObject(&a);
 }

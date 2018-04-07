@@ -26,4 +26,6 @@ void printProcs(ProcInfo *procs, int numProcs, FILE *stream);
 
 void printProcsWithStats(ProcInfo *procs, int numProcs, FILE *stream); 
 
+void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int timeChartIndex, int numProcs, double timeSinceStart);
+
 #endif

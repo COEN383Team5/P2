@@ -35,6 +35,24 @@ void sortByArrivalTime(ProcInfo **procs, int numProcs) {
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
     int i;
     for(i = 0; i < numProcs; i++) {
-        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tttime %.1f,\tctime %.4f,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].totalRunTime, procs[i].completedRunTime, procs[i].priority);
+        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].priority);
     }
+}
+
+void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int timeChartIndex, int numProcs, double timeSinceStart) {
+    int i;
+    double waitTimeTemp, turnAroundTemp;
+    printf("\nTime chart:\n");
+    for(i = 0; i < timeChartIndex; i++) {
+        printf("%d ", timeChart[i]);
+    }
+    printf("\n\n");
+    printf("Stats for procs:\n");
+    for(i = 0; i < finishedIndex; i++) {
+       waitTimeTemp = ((double)finished[i]->totalWaitTime)/ceil(finished[i]->totalRunTime);
+       turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
+
+       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp);
+    }
+    printf("Throughput: %.4f processes/quanta\n", numProcs/timeSinceStart);
 }

@@ -68,26 +68,11 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 		ri->iters++;
 	}
 
-    printf("\nTime chart:\n");
-    for(i = 0; i < ri->iters; i++) {
-        printf("%d ", ri->timeChart[i]);
-    }   
-    printf("\n\n");
-    printf("Stats for procs:\n");
-    for(i = 0; i < finishedIndex; i++) {
-       waitTimeTemp = ((float)finished[i]->totalWaitTime)/ceil(finished[i]->totalRunTime);
-       turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
-
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
-//       note that this doesn't have to be done because it points to procCopy
-//       free(finished[i]);
-       finished[i] = NULL;
-    }
-    printf("Throughput: %.4f processes/quanta\n", numProcs/ri->runTime);
-
+    printResults(finished, finishedIndex, ri->timeChart, ri->iters, numProcs, ri->runTime);
+//  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     free(finished);
 	cleanupPriorityQueue(&pq);
 	pq = NULL;
-	free(procCopy); // may cause double free
+	free(procCopy);
 	procCopy = NULL;
 }

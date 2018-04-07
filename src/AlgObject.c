@@ -71,24 +71,6 @@ void first100Preemptive(AlgObject *a) {
     first100(a, 1);
 }
 
-void printResults(AlgObject *a) {
-    int i;
-    double waitTimeTemp, turnAroundTemp;
-    printf("\nTime chart:\n");
-    for(i = 0; i < a->timeChartIndex; i++) {
-        printf("%d ", a->timeChart[i]);
-    }   
-    printf("\n\n");
-    printf("Stats for procs:\n");
-    for(i = 0; i < a->finishedIndex; i++) {
-       waitTimeTemp = ((double)a->finished[i]->totalWaitTime)/ceil(a->finished[i]->totalRunTime);
-       turnAroundTemp = a->finished[i]->totalWaitTime+a->finished[i]->completedRunTime;
-
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", a->finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp); 
-    }
-    printf("Throughput: %.4f processes/quanta\n", a->numProcs/a->timeSinceStart);
-}
-
 void giveQuanta(AlgObject *a, int i, int preemptive) {
     double timeLeftForProc;
 	a->timeChart[a->timeChartIndex++] = a->started[i]->id;

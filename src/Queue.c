@@ -1,5 +1,5 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 #include "ProcInfo.h"
 

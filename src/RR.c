@@ -17,6 +17,6 @@ void doRR(ProcInfo *procs, int numProcs) {
             giveQuantaPremptive(a, i);
         }
     }
-    printResults(a);
+    printResults(a->finished, a->finishedIndex, a->timeIndex, a->timeChartIndex, a->numProcs, a->timeSinceStart);
     cleanupAlgObject(&a);
 }

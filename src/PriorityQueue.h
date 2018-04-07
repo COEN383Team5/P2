@@ -2,7 +2,7 @@
 #define PRIORITYQUEUE_H
 
 #include <stdio.h>
-#include "Node.h"
+#include "Queue.h"
 
 typedef struct PriorityQueue {
 	Queue **queues;
