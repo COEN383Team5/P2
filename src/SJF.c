@@ -30,6 +30,6 @@ void doSJF(ProcInfo *procs, int numProcs) {
         sjp = getProcWithShortestJob(a);
         giveQuantaNonPremptive(a, sjp);
     }
-    printResults(a->finished, a->finishedIndex, a->timeIndex, a->timeChartIndex, a->numProcs, a->timeSinceStart);`
+    printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
     cleanupAlgObject(&a);
 }

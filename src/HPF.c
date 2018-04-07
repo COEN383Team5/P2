@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "HPF.h"
 
 RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive) {
@@ -26,10 +25,10 @@ RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive) {
 
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 	RunInfo *ri;
-	float timeLeft, waitTimeTemp, turnAroundTemp;
+	float timeLeft;
 	ProcInfo *temp, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
 	ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
-	int i, finishedIndex = 0;
+	int finishedIndex = 0;
 	PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
 
 	memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));

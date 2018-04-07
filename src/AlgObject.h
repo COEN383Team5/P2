@@ -57,7 +57,7 @@ void first100Preemptive(AlgObject *a);
  * @param a
  *      an AlgObject created by createAlgObject(2)
  */
-void printResults(AlgObject *a);
+void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int timeChartIndex, int numProcs, double timeSinceStart);
 
 /* gives a->started[i] some portion of a quanta and updates the relavent variables
  * @param a

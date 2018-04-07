@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "ProcInfo.h"
 
 int partition(ProcInfo **procs, int low, int high) {

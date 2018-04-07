@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include "AlgObject.h"
 
 AlgObject *createAlgObject(ProcInfo *procs, int numProcs) {
