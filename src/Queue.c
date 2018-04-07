@@ -1,55 +1,57 @@
-#ifndef QUEUE_H
-#define QUEUE_H
+#include <stdlib.h>
+#include "Queue.h"
 
-#include "ProcInfo.h"
+Queue *initializeQueue() {
+	Queue *retval = (Queue *)malloc(sizeof(Queue));
+	retval->head = retval->tail = (Node *)calloc(1,sizeof(Node));
+	return retval;
+}
 
-// A node for a doubly linked list
-typedef struct Node {
-	ProcInfo *proc;
-	struct Node *next, *prev;
-} Node;
+void cleanupQueue(Queue **a) {
+	ProcInfo *temp;
+	if(a != NULL) {
+		while((temp = pop(a)) != NULL) {
+        /*  This may cause a double free if the ProcInfo is later freed again 
+         *  or may cause free to throw an exception if the ProcInfo is in the
+         *  middle of section of the heap allocated to an array of ProcInfos
+         *  which is the case most of the time
+         *
+         *  Since the code in this repo only cleans up the queue when it is empty
+         *  this is not a concern, but if this code is used else where then this 
+         *  may prevent a memory leak, or inform the user of what is going on.
+         */
+			free(temp); 
+			temp = NULL;
+		}
+		free(*a);
+		*a = NULL;
+	}
+}
 
-// Doubly linked list
-typedef struct Queue {
-	Node *head, *tail;
-} Queue;
+void addToQueue(Queue **a, ProcInfo *proc) {
+	(*a)->tail->next = (Node *)calloc(1,sizeof(Node));
+	(*a)->tail->next->prev = (*a)->tail;
+	(*a)->tail = (*a)->tail->next;
+	(*a)->tail->proc = proc;
+}
 
-/* Creates an empty doubly linked list
- * @retval a Queue allocated on the heap with a dummy node
- */
-Queue *initializeQueue();
+ProcInfo *pop(Queue **a) {
+	Node *temp;
+	ProcInfo *retval = NULL;
+	if((*a)->head->next != NULL && (*a)->head->next->proc != NULL){
+		retval = (*a)->head->next->proc;
+		temp = (*a)->head->next;
+		(*a)->head->next = (*a)->head->next->next;	
+		free(temp);
+		temp = NULL;
+	}
+	return retval;
+}
 
-/* Frees the memory of a Queue 
- * @param a
- * 		a Queue that was initialized with initializeQueue()
- */
-void cleanupQueue(Queue **a);
-
-/* Adds proc to the end of a
- * @param Queue
- * 		the queue to add proc to the end of
- * @param proc
- * 		a pointer to the proc to add to the queue
- */
-void addToQueue(Queue **a, ProcInfo *proc);
-
-/* returns the element at the head of the queue, if there is one
- * @param a
- * 		a reference to the queue to retreive the data from
- *      the data will no longer be in the queue when this function returns
- * @retval a reference to the data that was stored at the head of the queue
- * 		if there is no valid data in the queue, retval will be NULL
- *		it is up to the programmer to ensure that this return value is freed when it is no longer needed
- *		otherwise there will be a memory leak
- */
-ProcInfo *pop(Queue **a);
-
-/* Convience function that prints the contents of the queue
- * @param a
- *      the queue to print the contents of
- * @param stream
- *      the stream to print to
- */
-void printQueue(Queue *a, FILE *stream);
-
-#endif
+void printQueue(Queue *a, FILE *stream) {
+    Node *temp = a->head->next;
+    while(temp != NULL && temp->proc != NULL) {
+        fprintf(stream, "%d ", temp->proc->id);
+        temp = temp->next;
+    }
+}
