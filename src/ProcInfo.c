@@ -53,7 +53,7 @@ void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int ti
        waitTimeTemp = ((double)finished[i]->totalWaitTime)/ceil(finished[i]->totalRunTime);
        turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
 
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, waitTimeTemp);
+       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, finished[i]->responseTime);
     }
     printf("Throughput: %.4f processes/quanta\n", numProcs/timeSinceStart);
 }

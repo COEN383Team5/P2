@@ -42,6 +42,7 @@ void first100(AlgObject *a, int preemptive) {
     for(i = 0; i < 100 && a->unstartedIndex+1 < a->numProcs; i++) {
         a->timeChart[a->timeChartIndex++] = a->unstarted[a->unstartedIndex].id; 
         timeLeftForProc = a->unstarted[a->unstartedIndex].totalWaitTime-a->unstarted[a->unstartedIndex].completedRunTime;
+        a->unstarted[a->unstartedIndex].responseTime = a->timeSinceStart-a->unstarted[a->unstartedIndex].arrivalTime;
         if(timeLeftForProc < 1 && preemptive) {
             a->unstarted[a->unstartedIndex].completedRunTime += timeLeftForProc;
             a->timeSinceStart += timeLeftForProc;
