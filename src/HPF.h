@@ -11,8 +11,6 @@ typedef struct RunInfo {
     int iters;
 } RunInfo;
 
-RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive);
-
 void doHPF(ProcInfo *procs, int numProcs, int preemptive);
 
 #endif

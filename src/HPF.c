@@ -3,26 +3,6 @@
 #include <string.h>
 #include "HPF.h"
 
-RunInfo *first100HPF(ProcInfo **procs, int numProcs, int preemptive) {
-	RunInfo *retval = (RunInfo *)calloc(1, sizeof(RunInfo));
-	retval->timeChart = (int *)calloc(10240, sizeof(int));
-	for(retval->iters = 0; retval->iters < 100 && retval->iters < numProcs; retval->iters++) {
-		retval->timeChart[retval->iters] = (*procs)[retval->iters].id;
-		if((*procs)[retval->iters].totalRunTime < 1 && preemptive) {
-			(*procs)[retval->iters].totalWaitTime += retval->runTime-(*procs)[retval->iters].lastRunTime;
-			retval->runTime += (*procs)[retval->iters].totalRunTime;
-			(*procs)[retval->iters].lastRunTime = retval->runTime;
-			(*procs)[retval->iters].completedRunTime = (*procs)[retval->iters].totalRunTime;
-		} else {
-			(*procs)[retval->iters].totalWaitTime += retval->runTime-(*procs)[retval->iters].lastRunTime;
-			retval->runTime += 1;
-			(*procs)[retval->iters].lastRunTime = retval->runTime;
-			(*procs)[retval->iters].completedRunTime += 1;
-		}
-	}
-	return retval;
-}
-
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 	RunInfo *ri;
 	float timeLeft;
@@ -41,30 +21,13 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     }
 	printProcs(procs, numProcs, stdout);
 
-	ri = first100HPF(&procCopy, numProcs, preemptive);
+// TODO have to get first 100 before filling priority queue
+//	ri = first100HPF(&procCopy, numProcs, preemptive);
 	fillPriorityQueue(&pq, procCopy, numProcs);
 
 
 	while((temp = getNextProc(&pq)) != NULL) {
-		ri->timeChart[ri->iters] = temp->id;
-		timeLeft = temp->totalRunTime-temp->completedRunTime;
-		if(timeLeft < 1 && preemptive) {
-			temp->totalWaitTime += ri->runTime-temp->lastRunTime;
-			ri->runTime += timeLeft;
-			temp->lastRunTime = ri->runTime;
-			temp->completedRunTime += timeLeft;
-		} else {
-			temp->totalWaitTime += ri->runTime-temp->lastRunTime;
-			ri->runTime += 1;
-			temp->lastRunTime = ri->runTime;
-			temp->completedRunTime += 1;
-		}
-		if(temp->completedRunTime < temp->totalRunTime) {
-			addProc(&pq, temp);
-		} else {
-			finished[finishedIndex++] = temp; 
-		}
-		ri->iters++;
+   // TODO 
 	}
 
     printResults(finished, finishedIndex, ri->timeChart, ri->iters, numProcs, ri->runTime);

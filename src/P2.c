@@ -42,6 +42,8 @@ Processes *getProcesses() {
         retval->procs[i].completedRunTime = 0;
         retval->procs[i].totalWaitTime = 0;
         retval->procs[i].priority = rand()%NUM_PRIORITIES+1;
+        retval->procs[i].startTime = 0;
+        retval->procs[i].responseTime = 0;
         summedTotalRunTime += retval->procs[i].totalRunTime;
     }
     retval->numProcs = i;

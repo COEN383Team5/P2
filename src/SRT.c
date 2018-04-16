@@ -23,13 +23,8 @@ void doSRT(ProcInfo *procs, int numProcs) {
     printf("Starting shortest remaining time algorithm\n\n");
     printProcs(procs, numProcs, stdout);
     
-    first100Preemptive(a);
+    // TODO
 
-    while(a->startedIndex > 0) {
-        // there are some processes that need to finish executing
-        sjp = getProcWithShortestRemainingTime(a);
-        giveQuantaPremptive(a, sjp);
-    }
     printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
     cleanupAlgObject(&a);
 }

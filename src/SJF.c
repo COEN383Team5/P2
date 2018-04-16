@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "SJF.h"
 
+
 int getProcWithShortestJob(AlgObject *a) {
     int i, shortest = 0;
     float temp = a->started[0]->totalRunTime;
@@ -23,13 +24,8 @@ void doSJF(ProcInfo *procs, int numProcs) {
     printf("Starting shortest job first algorithm\n\n");
     printProcs(procs, numProcs, stdout);
     
-    first100NonPreemptive(a);
+    // TODO
 
-    while(a->startedIndex > 0) {
-        // there are some processes that need to finish executing
-        sjp = getProcWithShortestJob(a);
-        giveQuantaNonPremptive(a, sjp);
-    }
     printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
     cleanupAlgObject(&a);
 }
