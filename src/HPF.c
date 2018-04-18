@@ -35,18 +35,14 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     // only quit when there are not more processes to run
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
-            if(preemptive) {
-                if(curRun != NULL 
-                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
-                    && procCopy[nextProc].priority < curRun->priority
-                ) {
-                    addToStack(&preemptedProcs, curRun);
-                    printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
-                    curRun = &procCopy[nextProc++];
-                    timeChart[chartIndex++] = curRun->id;
-                } else {
-                    addProc(&pq, &procCopy[nextProc++]); 
-                }
+            if(preemptive && curRun != NULL 
+                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+                && procCopy[nextProc].priority < curRun->priority
+            ) {
+                addToStack(&preemptedProcs, curRun);
+                printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
+                curRun = &procCopy[nextProc++];
+                timeChart[chartIndex++] = curRun->id;
             } else {
                 addProc(&pq, &procCopy[nextProc++]); 
             }
