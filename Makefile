@@ -1,6 +1,7 @@
-CXX			:= gcc
-CXXFLAGS	:= -Wall -g
-SRCS		:= $(patsubst src/%.c, %.c, $(wildcard src/*.c))
+CXX			:= g++
+CXXFLAGS	:= -Wall -O3
+SRC_SUFFIX	:= c
+SRCS		:= $(patsubst src/%.$(SRC_SUFFIX), %.$(SRC_SUFFIX), $(wildcard src/*.$(SRC_SUFFIX)))
 OBJ_DIR		:= obj/
 BIN_DIR		:= bin/
 VPATH		:= src:${OBJ_DIR}
@@ -15,7 +16,7 @@ clean:
 	@rm -rf $(OBJ_DIR)
 .PHONY: clean
 
-%.o: %.c
+%.o: %.$(SRC_SUFFIX)
 	@mkdir -p $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $(OBJ_DIR)$@ $<
 
