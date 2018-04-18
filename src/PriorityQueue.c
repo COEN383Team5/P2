@@ -9,9 +9,6 @@ PriorityQueue *initializePriorityQueue(int numPriorities) {
 	retval->queues = (Queue **)calloc(numPriorities, sizeof(Queue *));
 	for(i = 0; i < numPriorities; i++) {
 		retval->queues[i] = initializeQueue();
-        if(retval->queues[i]->head != retval->queues[i]->tail) {
-            printf("***WTF***\n");
-        }
 	}
 	return retval;
 }
