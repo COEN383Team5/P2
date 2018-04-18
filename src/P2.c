@@ -29,7 +29,7 @@ typedef struct Processes {
  *      procs is a heap allocated array of ProcInfo
  */
 Processes *getProcesses() {
-    int i;
+    int i, temp = 0;
     float summedTotalRunTime = 0, lastProcFinishTime = 0;
     Processes *retval = (Processes *)malloc(sizeof(Processes));
     retval->procs = (ProcInfo *)malloc(MAX_PROCS*sizeof(ProcInfo));
@@ -37,11 +37,16 @@ Processes *getProcesses() {
     //for(i = 0; i < MAX_PROCS; i++) {
         retval->procs[i].id = i+1;
         if(i == 0) {
-            retval->procs[i].arrivalTime = rand()%2;
+            retval->procs[i].arrivalTime = 0;
         } else {
             // ensures processor is not unused for more than a single quanta between procs as most
+            if(retval->procs[i-1].totalRunTime < 1) {
+                temp = 1;
+            } else {
+                temp = (int)retval->procs[i-1].totalRunTime;
+            }   
             retval->procs[i].arrivalTime = retval->procs[i-1].arrivalTime
-                +(rand()%retval->procs[i-1].totalRunTime)+1;
+                +(rand()%temp);
         }
         retval->procs[i].totalRunTime = (rand()%100+1)/10.0;
         retval->procs[i].completedRunTime = 0;
