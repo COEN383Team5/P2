@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define NUM_PRIORITIES 4
+#define desiredQuanta 100
 
 typedef struct ProcInfo {
     int id; 
@@ -10,7 +11,7 @@ typedef struct ProcInfo {
     double totalRunTime;
     // completedRunTime is the amount of time that this process has be allowed to run, starts at 0 and ends at >= totalRunTime
     double completedRunTime;
-    double startTime
+    double startTime;
     double responseTime;
     double totalWaitTime;
     int priority;

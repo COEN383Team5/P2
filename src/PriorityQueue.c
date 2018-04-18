@@ -5,6 +5,7 @@ PriorityQueue *initializePriorityQueue(int numPriorities) {
 	int i;
 	PriorityQueue *retval = (PriorityQueue *)malloc(sizeof(PriorityQueue));
 	retval->numPriorities = numPriorities;
+    retval->numInQueues = 0;
 	retval->queues = (Queue **)calloc(numPriorities, sizeof(Queue *));
 	for(i = 0; i < numPriorities; i++) {
 		retval->queues[i] = initializeQueue();
@@ -29,6 +30,7 @@ void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs) {
 	int i;
 	for(i = 0; i < numProcs; i++) {
 		addToQueue(&((*pq)->queues[procs[i].priority-1]), &procs[i]); 
+        (*pq)->numInQueues++;
 	}
 }
 
@@ -45,6 +47,7 @@ ProcInfo *getNextProc(PriorityQueue **pq) {
 
 void addProc(PriorityQueue **pq, ProcInfo *proc) {
 	addToQueue(&((*pq)->queues[proc->priority-1]), proc);
+    (*pq)->numInQueues++;
 }
 
 void printPQ(PriorityQueue *pq, FILE *stream) {

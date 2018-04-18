@@ -5,12 +5,6 @@
 #include "AlgObject.h"
 #include "PriorityQueue.h"
 
-typedef struct RunInfo {
-    int *timeChart;
-    double runTime;
-    int iters;
-} RunInfo;
-
 void doHPF(ProcInfo *procs, int numProcs, int preemptive);
 
 #endif

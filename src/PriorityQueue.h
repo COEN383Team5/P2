@@ -7,6 +7,7 @@
 typedef struct PriorityQueue {
 	Queue **queues;
 	int numPriorities;
+    int numInQueues;
 } PriorityQueue;
 
 /* creates a PriorityQueue with numPriorities priorities
@@ -33,7 +34,8 @@ void cleanupPriorityQueue(PriorityQueue **pq);
  */
 void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs);
 
-/* Returns the highest priority process, if there is on
+/* Returns the highest priority process, and removes it from the priority queue,
+ * if there is one
  * @param pq
  *		a reference to a PriorityQueue
  * @retval the highest priority process, or NULL if there are no more processes

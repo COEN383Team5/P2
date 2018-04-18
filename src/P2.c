@@ -12,7 +12,6 @@
 
 // this is (1000+10)/2
 #define MAX_PROCS 1000
-#define desiredQuanta 100
 #define NUM_ALGS 6
 
 char *helpText = "Usage:\n\t%s [algType | numRuns]\nWhere:\n\talgType is the name of an algorith to run. Possible options are:FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, or HPF_PREEMPT\n\n\tnumRuns is the number of times you want to run each algorithm in a row. In this case it will run all of the algoritms\n\nOnly one of the arguments is required.\n";
@@ -31,13 +30,19 @@ typedef struct Processes {
  */
 Processes *getProcesses() {
     int i;
-    float summedTotalRunTime = 0;
+    float summedTotalRunTime = 0, lastProcFinishTime = 0;
     Processes *retval = (Processes *)malloc(sizeof(Processes));
     retval->procs = (ProcInfo *)malloc(MAX_PROCS*sizeof(ProcInfo));
     for(i = 0; i < MAX_PROCS && summedTotalRunTime < desiredQuanta; i++) {
     //for(i = 0; i < MAX_PROCS; i++) {
         retval->procs[i].id = i+1;
-        retval->procs[i].arrivalTime = (rand()%100000)/1000.0;
+        if(i == 0) {
+            retval->procs[i].arrivalTime = rand()%2;
+        } else {
+            // ensures processor is not unused for more than a single quanta between procs as most
+            retval->procs[i].arrivalTime = retval->procs[i-1].arrivalTime
+                +(rand()%retval->procs[i-1].totalRunTime)+1;
+        }
         retval->procs[i].totalRunTime = (rand()%100+1)/10.0;
         retval->procs[i].completedRunTime = 0;
         retval->procs[i].totalWaitTime = 0;
