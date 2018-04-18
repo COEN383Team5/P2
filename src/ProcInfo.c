@@ -36,7 +36,7 @@ void sortByArrivalTime(ProcInfo **procs, int numProcs) {
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
     int i;
     for(i = 0; i < numProcs; i++) {
-        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].priority);
+        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tpriority: %d,\trunTime: %f\n", procs[i].id, procs[i].arrivalTime, procs[i].priority, procs[i].totalRunTime);
     }
 }
 
