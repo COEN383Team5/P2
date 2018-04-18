@@ -31,7 +31,7 @@ void cleanupQueue(Queue **a);
  * @param proc
  * 		a pointer to the proc to add to the queue
  */
-void addToQueue(Queue **a, ProcInfo *proc);
+void addToQueue(Queue *a, ProcInfo *proc);
 
 /* returns the element at the head of the queue, if there is one
  * @param a
@@ -42,7 +42,7 @@ void addToQueue(Queue **a, ProcInfo *proc);
  *		it is up to the programmer to ensure that this return value is freed when it is no longer needed
  *		otherwise there will be a memory leak
  */
-ProcInfo *pop(Queue **a);
+ProcInfo *pop(Queue *a);
 
 /* Convience function that prints the contents of the queue
  * @param a

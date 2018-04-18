@@ -9,6 +9,9 @@ PriorityQueue *initializePriorityQueue(int numPriorities) {
 	retval->queues = (Queue **)calloc(numPriorities, sizeof(Queue *));
 	for(i = 0; i < numPriorities; i++) {
 		retval->queues[i] = initializeQueue();
+        if(retval->queues[i]->head != retval->queues[i]->tail) {
+            printf("***WTF***\n");
+        }
 	}
 	return retval;
 }
@@ -29,7 +32,7 @@ void cleanupPriorityQueue(PriorityQueue **pq) {
 void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs) {
 	int i;
 	for(i = 0; i < numProcs; i++) {
-		addToQueue(&((*pq)->queues[procs[i].priority-1]), &procs[i]); 
+		addToQueue((*pq)->queues[procs[i].priority-1], &procs[i]); 
         (*pq)->numInQueues++;
 	}
 }
@@ -38,7 +41,7 @@ ProcInfo *getNextProc(PriorityQueue **pq) {
 	int i;
 	ProcInfo *temp = NULL;
 	for(i = 0; i < (*pq)->numPriorities; i++) {
-		if((temp = pop(&((*pq)->queues[i]))) != NULL) {
+		if((temp = pop((*pq)->queues[i])) != NULL) {
 			break; // found a valid ProcInfo
 		}
 	}
@@ -46,7 +49,7 @@ ProcInfo *getNextProc(PriorityQueue **pq) {
 }
 
 void addProc(PriorityQueue **pq, ProcInfo *proc) {
-	addToQueue(&((*pq)->queues[proc->priority-1]), proc);
+	addToQueue((*pq)->queues[proc->priority-1], proc);
     (*pq)->numInQueues++;
 }
 

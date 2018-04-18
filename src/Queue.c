@@ -3,14 +3,15 @@
 
 Queue *initializeQueue() {
 	Queue *retval = (Queue *)malloc(sizeof(Queue));
-	retval->head = retval->tail = (Node *)calloc(1,sizeof(Node));
+    retval->tail = (Node *)calloc(1,sizeof(Node));
+    retval->head = retval->tail;
 	return retval;
 }
 
 void cleanupQueue(Queue **a) {
 	ProcInfo *temp;
 	if(a != NULL) {
-		while((temp = pop(a)) != NULL) {
+		while((temp = pop(*a)) != NULL) {
         /*  This may cause a double free if the ProcInfo is later freed again 
          *  or may cause free to throw an exception if the ProcInfo is in the
          *  middle of section of the heap allocated to an array of ProcInfos
@@ -28,20 +29,23 @@ void cleanupQueue(Queue **a) {
 	}
 }
 
-void addToQueue(Queue **a, ProcInfo *proc) {
-	(*a)->tail->next = (Node *)calloc(1,sizeof(Node));
-	(*a)->tail->next->prev = (*a)->tail;
-	(*a)->tail = (*a)->tail->next;
-	(*a)->tail->proc = proc;
+void addToQueue(Queue *a, ProcInfo *proc) {
+	a->tail->next = (Node *)calloc(1,sizeof(Node));
+	a->tail->next->prev = a->tail;
+	a->tail = a->tail->next;
+	a->tail->proc = proc;
 }
 
-ProcInfo *pop(Queue **a) {
+ProcInfo *pop(Queue *a) {
 	Node *temp;
 	ProcInfo *retval = NULL;
-	if((*a)->head->next != NULL && (*a)->head->next->proc != NULL){
-		retval = (*a)->head->next->proc;
-		temp = (*a)->head->next;
-		(*a)->head->next = (*a)->head->next->next;	
+	if(a->head->next != NULL && a->head->next->proc != NULL){
+		retval = a->head->next->proc;
+		temp = a->head->next;
+        if(temp == a->tail) {
+            a->tail = a->head;    
+        }
+		a->head->next = a->head->next->next;	
 		free(temp);
 		temp = NULL;
 	}

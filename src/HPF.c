@@ -35,12 +35,18 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     // only quit when there are not more processes to run
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
-            if(preemptive && curRun != NULL 
-                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime) {
-                addToStack(&preemptedProcs, curRun);
-                printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
-                curRun = &procCopy[nextProc++];
-                timeChart[chartIndex++] = curRun->id;
+            if(preemptive) {
+                if(curRun != NULL 
+                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+                    && procCopy[nextProc].priority < curRun->priority
+                ) {
+                    addToStack(&preemptedProcs, curRun);
+                    printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
+                    curRun = &procCopy[nextProc++];
+                    timeChart[chartIndex++] = curRun->id;
+                } else {
+                    addProc(&pq, &procCopy[nextProc++]); 
+                }
             } else {
                 addProc(&pq, &procCopy[nextProc++]); 
             }
@@ -50,11 +56,15 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
                 printf("Running proc that was preempted %d\n", temp->id);
                 curRun = temp;
                 temp = NULL;
-            } else if((curRun = getNextProc(&pq)) == NULL) {
+            } else if((curRun = getNextProc(&pq)) == NULL && curTime > desiredQuanta) {
                 // no more procs to run
                 break;
             } 
-            timeChart[chartIndex++] = curRun->id;
+            if(curRun != NULL) {
+                timeChart[chartIndex++] = curRun->id;
+            } else {
+                fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
+            }
         }
         if(curRun != NULL) {
             giveQuantaToProc(curRun, curTime);
