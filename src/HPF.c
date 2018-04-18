@@ -13,7 +13,7 @@ void giveQuantaToProc(ProcInfo *proc, int curTime) {
 }
 
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
-    Queue PreemptedProcs;
+    Queue *preemptedProcs;
     int timeChart[10240];
 	ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
 	ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
@@ -32,7 +32,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
 	printProcs(procs, numProcs, stdout);
     
     // only quit when there are not more processes to run
-    while(true) {
+    while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
             if(preemptive && curRun != NULL 
                 && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime) {
@@ -65,7 +65,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
         curTime++;
     }
 
-    printResults(finished, finishedIndex, timeChart, iters, numProcs, curTime);
+    printResults(finished, finishedIndex, timeChart, curTime, numProcs, curTime);
 //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     cleanupQueue(&preemptedProcs);
     preemptedProcs = NULL;
