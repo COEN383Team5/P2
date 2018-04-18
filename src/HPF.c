@@ -16,29 +16,29 @@ void giveQuantaToProc(ProcInfo *proc, int curTime) {
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     Stack *preemptedProcs;
     int timeChart[10240];
-	ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
-	ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
-	int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
-	PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
+    ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
+    ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
+    int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
+    PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
 
-	memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
+    memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
     preemptedProcs = createStack();
 
-	printf("Starting highest priority first algorithm");
+    printf("Starting highest priority first algorithm");
     if(preemptive) {
         printf(" with preemption\n\n");
     } else {
         printf(" without preemption\n\n");
     }
-	printProcs(procs, numProcs, stdout);
-    
+    printProcs(procs, numProcs, stdout);
+
     // only quit when there are not more processes to run
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
             if(preemptive && curRun != NULL 
-                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
-                && procCopy[nextProc].priority < curRun->priority
-            ) {
+                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+                    && procCopy[nextProc].priority < curRun->priority
+              ) {
                 addToStack(&preemptedProcs, curRun);
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
                 curRun = &procCopy[nextProc++];
@@ -75,13 +75,13 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     }
 
     printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
-//  note that finished[i] doesn't have to be freed because it points to a part of procCopy
+    //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     freeStack(&preemptedProcs);
     preemptedProcs = NULL;
     free(finished);
     finished = NULL;
-	cleanupPriorityQueue(&pq);
-	pq = NULL;
-	free(procCopy);
-	procCopy = NULL;
+    cleanupPriorityQueue(&pq);
+    pq = NULL;
+    free(procCopy);
+    procCopy = NULL;
 }
