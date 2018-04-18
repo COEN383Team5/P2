@@ -13,15 +13,15 @@ void giveQuantaToProc(ProcInfo *proc, int curTime) {
 }
 
 void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
-	RunInfo *ri;
-	float timeLeft;
-    bool done = false;
-	ProcInfo *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
+    Queue PreemptedProcs;
+    int timeChart[10240];
+	ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
 	ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
 	int finishedIndex = 0, nextProc = 0, curTime = 0;
 	PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
 
 	memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
+    preemptedProcs = initializeQueue();
 
 	printf("Starting highest priority first algorithm");
     if(preemptive) {
@@ -31,16 +31,27 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
     }
 	printProcs(procs, numProcs, stdout);
     
-    while(!done) {
-        curTime++;
+    // only quit when there are not more processes to run
+    while(true) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
-           addProc(&pq, &procCopy[nextProc++]); 
+            if(preemptive && curRun != NULL 
+                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime) {
+                addToQueue(&preemptedProcs, curRun);
+                curRun = &procCopy[nextProc++];
+                timeChart[curTime] = curRun->id;
+            } else {
+                addProc(&pq, &procCopy[nextProc++]); 
+            }
         }
         if(curRun == NULL) {
-            if((curRun = getNextProc(&pq)) == NULL) {
-                done = true;
+            if((temp = pop(&preemptedProcs)) != NULL) {
+                curRun = temp;
+                temp = NULL;
+            } else if((curRun = getNextProc(&pq)) == NULL) {
+                // no more procs to run
                 break;
-            }
+            } 
+            timeChart[curTime] = curRun->id;
         }
         if(curRun != NULL) {
             giveQuantaToProc(curRun, curTime);
@@ -51,15 +62,15 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
         } else {
             fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
         }
+        curTime++;
     }
 
-	while((temp = getNextProc(&pq)) != NULL) {
-   // TODO 
-	}
-
-    printResults(finished, finishedIndex, ri->timeChart, ri->iters, numProcs, ri->runTime);
+    printResults(finished, finishedIndex, timeChart, iters, numProcs, curTime);
 //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
+    cleanupQueue(&preemptedProcs);
+    preemptedProcs = NULL;
     free(finished);
+    finished = NULL;
 	cleanupPriorityQueue(&pq);
 	pq = NULL;
 	free(procCopy);
