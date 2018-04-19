@@ -21,7 +21,7 @@ PriorityQueue *initializePriorityQueue(int numPriorities);
  * @param pq
  *		a reference to a PriorityQueue created by initializePriorityQueue
  */
-void cleanupPriorityQueue(PriorityQueue **pq);
+void cleanupPriorityQueue(PriorityQueue *pq);
 
 /* Fills pq with the procs based on the procs priority
  * @param pq
@@ -32,7 +32,7 @@ void cleanupPriorityQueue(PriorityQueue **pq);
  * @param numProcs
  *		the number of ProcInfos in procs
  */
-void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs);
+void fillPriorityQueue(PriorityQueue *pq, ProcInfo *procs, int numProcs);
 
 /* Returns the highest priority process, and removes it from the priority queue,
  * if there is one
@@ -41,7 +41,7 @@ void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs);
  * @retval the highest priority process, or NULL if there are no more processes
  * 		it is the programmer's responsiblity to free retval
  */
-ProcInfo *getNextProc(PriorityQueue **pq);
+ProcInfo *getNextProc(PriorityQueue *pq);
 
 /* adds proc into the appropriate Queue in the PriorityQueue
  * @param pq
@@ -49,7 +49,7 @@ ProcInfo *getNextProc(PriorityQueue **pq);
  * @param proc
  * 		a reference to a ProcInfo to add to the PriorityQueue
  */
-void addProc(PriorityQueue **pq, ProcInfo *proc);
+void addProc(PriorityQueue *pq, ProcInfo *proc);
 
 /* Convience function that prints the contents of the priority queue
  * @param pq

@@ -2,15 +2,15 @@
 #include <string.h>
 #include "Stack.h"
 
-void resize(Stack **s) {
-    ProcInfo **temp = (ProcInfo **)calloc((*s)->size<<1, sizeof(ProcInfo*));
-    memcpy(temp, (*s)->procs, sizeof(ProcInfo *)*(*s)->size);
-    (*s)->size <<= 1;
-    free((*s)->procs);
-    (*s)->procs = temp;
+void resize(Stack *s) {
+    ProcInfo **temp = (ProcInfo **)calloc(s->size<<1, sizeof(ProcInfo*));
+    memcpy(temp, s->procs, sizeof(ProcInfo *)*s->size);
+    s->size <<= 1;
+    free(s->procs);
+    s->procs = temp;
 }
 
-Stack *createStack() {
+Stack *initializeStack() {
     Stack *s = (Stack *) malloc(sizeof(Stack));
     s->procs = (ProcInfo **)calloc(_INIT_STACK_SIZE, sizeof(ProcInfo*));
     s->numElements = 0;
@@ -19,24 +19,24 @@ Stack *createStack() {
     return s;
 }
 
-void freeStack(Stack **s) {
-    free((*s)->procs);
-    free(*s);
+void cleanupStack(Stack *s) {
+    free(s->procs);
+    free(s);
 }
 
-void addToStack(Stack **s, ProcInfo *p) {
-    if((*s)->numElements+1 < (*s)->size) {
+void addToStack(Stack *s, ProcInfo *p) {
+    if(s->numElements+1 < s->size) {
        resize(s); 
     }
-    (*s)->procs[(*s)->index++] = p;
-    (*s)->numElements++;
+    s->procs[s->index++] = p;
+    s->numElements++;
 }
 
-ProcInfo *popStack(Stack **s) {
-    if((*s)->numElements > 0) {
-        (*s)->numElements--;
-        (*s)->index--;
-        return (*s)->procs[(*s)->index];
+ProcInfo *popStack(Stack *s) {
+    if(s->numElements > 0) {
+        s->numElements--;
+        s->index--;
+        return s->procs[s->index];
     } else {
         return NULL;
     }

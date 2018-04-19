@@ -13,42 +13,42 @@ PriorityQueue *initializePriorityQueue(int numPriorities) {
 	return retval;
 }
 
-void cleanupPriorityQueue(PriorityQueue **pq) {
+void cleanupPriorityQueue(PriorityQueue *pq) {
 	int i;
-	if(*pq != NULL) {
-		for(i = 0; i < (*pq)->numPriorities; i++) {
-			cleanupQueue(&((*pq)->queues[i]));
+	if(pq != NULL) {
+		for(i = 0; i < pq->numPriorities; i++) {
+			cleanupQueue(pq->queues[i]);
 		}
-		free((*pq)->queues);
-		(*pq)->queues = NULL;
-		free(*pq);
-		*pq = NULL;
+		free(pq->queues);
+		pq->queues = NULL;
+		free(pq);
+		pq = NULL;
 	}
 }
 
-void fillPriorityQueue(PriorityQueue **pq, ProcInfo *procs, int numProcs) {
+void fillPriorityQueue(PriorityQueue *pq, ProcInfo *procs, int numProcs) {
 	int i;
 	for(i = 0; i < numProcs; i++) {
-		addToQueue((*pq)->queues[procs[i].priority-1], &procs[i]); 
-        (*pq)->numInQueues++;
+		addToQueue(pq->queues[procs[i].priority-1], &procs[i]); 
+        pq->numInQueues++;
 	}
 }
 
-ProcInfo *getNextProc(PriorityQueue **pq) {
+ProcInfo *getNextProc(PriorityQueue *pq) {
 	int i;
 	ProcInfo *temp = NULL;
-	for(i = 0; i < (*pq)->numPriorities; i++) {
-		if((temp = pop((*pq)->queues[i])) != NULL) {
-            (*pq)->numInQueues--;
+	for(i = 0; i < pq->numPriorities; i++) {
+		if((temp = pop(pq->queues[i])) != NULL) {
+            pq->numInQueues--;
 			break; // found a valid ProcInfo
 		}
 	}
 	return temp;
 }
 
-void addProc(PriorityQueue **pq, ProcInfo *proc) {
-	addToQueue((*pq)->queues[proc->priority-1], proc);
-    (*pq)->numInQueues++;
+void addProc(PriorityQueue *pq, ProcInfo *proc) {
+	addToQueue(pq->queues[proc->priority-1], proc);
+    pq->numInQueues++;
 }
 
 void printPQ(PriorityQueue *pq, FILE *stream) {

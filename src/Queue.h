@@ -23,7 +23,7 @@ Queue *initializeQueue();
  * @param a
  * 		a Queue that was initialized with initializeQueue()
  */
-void cleanupQueue(Queue **a);
+void cleanupQueue(Queue *a);
 
 /* Adds proc to the end of a
  * @param Queue

@@ -12,13 +12,13 @@ typedef struct Stack {
 
 /* returns a heap allocated stack
  */
-Stack *createStack();
+Stack *initializeStack();
 
-void freeStack(Stack **s);
+void cleanupStack(Stack *s);
 
-void addToStack(Stack **s, ProcInfo *p);
+void addToStack(Stack *s, ProcInfo *p);
 
-ProcInfo *popStack(Stack **s);
+ProcInfo *popStack(Stack *s);
 
 void printStack(Stack *s);
 #endif 

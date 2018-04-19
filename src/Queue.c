@@ -8,10 +8,10 @@ Queue *initializeQueue() {
 	return retval;
 }
 
-void cleanupQueue(Queue **a) {
+void cleanupQueue(Queue *a) {
 	ProcInfo *temp;
 	if(a != NULL) {
-		while((temp = pop(*a)) != NULL) {
+		while((temp = pop(a)) != NULL) {
         /*  This may cause a double free if the ProcInfo is later freed again 
          *  or may cause free to throw an exception if the ProcInfo is in the
          *  middle of section of the heap allocated to an array of ProcInfos
@@ -24,8 +24,8 @@ void cleanupQueue(Queue **a) {
 			free(temp); 
 			temp = NULL;
 		}
-		free(*a);
-		*a = NULL;
+		free(a);
+		a = NULL;
 	}
 }
 

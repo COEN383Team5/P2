@@ -16,10 +16,10 @@ void giveQuantaToProc(ProcInfo *proc, int curTime) {
     proc->lastRunTime = curTime;
 }
 
-void adjustPriorities(PriorityQueue **pq, int curTime) {
+void adjustPriorities(PriorityQueue *pq, int curTime) {
     int i;
     ProcInfo *p;
-    for(i = 0; i < (*pq)->numInQueues; i++) {
+    for(i = 0; i < pq->numInQueues; i++) {
         p = getNextProc(pq);
         if(curTime-p->lastRunTime >  AGING_TIME && p->priority != 1) {
                 p->priority--;
@@ -37,7 +37,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
 
     memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
-    preemptedProcs = createStack();
+    preemptedProcs = initializeStack();
 
     printf("Starting highest priority first algorithm");
     if(preemptive) {
@@ -54,20 +54,20 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
                     && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
                     && procCopy[nextProc].priority < curRun->priority
               ) {
-                addToStack(&preemptedProcs, curRun);
+                addToStack(preemptedProcs, curRun);
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
                 curRun = &procCopy[nextProc++];
                 timeChart[chartIndex++] = curRun->id;
             } else {
-                addProc(&pq, &procCopy[nextProc++]); 
+                addProc(pq, &procCopy[nextProc++]); 
             }
         }
         if(curRun == NULL) {
-            if((temp = popStack(&preemptedProcs)) != NULL) {
+            if((temp = popStack(preemptedProcs)) != NULL) {
                 printf("Running proc that was preempted %d\n", temp->id);
                 curRun = temp;
                 temp = NULL;
-            } else if((curRun = getNextProc(&pq)) == NULL && curTime > desiredQuanta) {
+            } else if((curRun = getNextProc(pq)) == NULL && curTime > desiredQuanta) {
                 // no more procs to run
                 break;
             } 
@@ -87,18 +87,18 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
             fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
         }
         if(aging) {
-            adjustPriorities(&pq, curTime);
+            adjustPriorities(pq, curTime);
         }
         curTime++;
     }
 
     printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
-    freeStack(&preemptedProcs);
+    cleanupStack(preemptedProcs);
     preemptedProcs = NULL;
 //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     free(finished);
     finished = NULL;
-    cleanupPriorityQueue(&pq);
+    cleanupPriorityQueue(pq);
     pq = NULL;
     free(procCopy);
     procCopy = NULL;
