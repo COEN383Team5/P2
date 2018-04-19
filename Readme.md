@@ -1,4 +1,4 @@
-#COEN383 P2
+# COEN383 P2
 
 This repo has code to simulate a scheduler using different algorithms. It was made to satisfy an assignment for COEN383: Advanced Operating Systems at Santa Clara University. 
 
