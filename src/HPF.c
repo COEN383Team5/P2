@@ -87,3 +87,4 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     cleanupPriorityQueue(pq);
     pq = NULL;
 }
+
