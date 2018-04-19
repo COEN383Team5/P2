@@ -5,6 +5,6 @@
 #include "AlgObject.h"
 #include "PriorityQueue.h"
 
-void doHPF(ProcInfo *procs, int numProcs, int preemptive);
+void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging);
 
 #endif

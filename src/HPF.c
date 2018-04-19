@@ -4,6 +4,8 @@
 #include "HPF.h"
 #include "Stack.h"
 
+#define AGING_TIME 5
+
 void giveQuantaToProc(ProcInfo *proc, int curTime) {
     if(proc->completedRunTime == 0) {
         proc->totalWaitTime += curTime-proc->arrivalTime;
@@ -11,9 +13,22 @@ void giveQuantaToProc(ProcInfo *proc, int curTime) {
         proc->responseTime = proc->totalWaitTime;
     }
     proc->completedRunTime++;
+    proc->lastRunTime = curTime;
 }
 
-void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
+void adjustPriorities(PriorityQueue **pq, int curTime) {
+    int i;
+    ProcInfo *p;
+    for(i = 0; i < (*pq)->numInQueues; i++) {
+        p = getNextProc(pq);
+        if(curTime-p->lastRunTime >  AGING_TIME && p->priority != 1) {
+                p->priority--;
+        }
+        addProc(pq, p);
+    }
+}
+
+void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     Stack *preemptedProcs;
     int timeChart[10240];
     ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
@@ -71,13 +86,16 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive) {
         } else {
             fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
         }
+        if(aging) {
+            adjustPriorities(&pq, curTime);
+        }
         curTime++;
     }
 
     printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
-    //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     freeStack(&preemptedProcs);
     preemptedProcs = NULL;
+//  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     free(finished);
     finished = NULL;
     cleanupPriorityQueue(&pq);

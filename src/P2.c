@@ -4,19 +4,19 @@
 #include <time.h>
 #include <string.h>
 #include "ProcInfo.h"
-#include "FCFS.h"
-#include "SJF.h"
-#include "SRT.h"
-#include "RR.h"
+//#include "FCFS.h"
+//#include "SJF.h"
+//#include "SRT.h"
+//#include "RR.h"
 #include "HPF.h"
 
 // this is (1000+10)/2
 #define MAX_PROCS 1000
-#define NUM_ALGS 6
+#define NUM_ALGS 8
 
-char *helpText = "Usage:\n\t%s [algType | numRuns]\nWhere:\n\talgType is the name of an algorith to run. Possible options are:FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, or HPF_PREEMPT\n\n\tnumRuns is the number of times you want to run each algorithm in a row. In this case it will run all of the algoritms\n\nOnly one of the arguments is required.\n";
+char *helpText = "Usage:\n\t%s [algType | numRuns]\nWhere:\n\talgType is the name of an algorith to run. Possible options are:FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT, HPF_NO_PREEMPT_AGING, or HPF_PREEMPT_AGING\n\n\tnumRuns is the number of times you want to run each algorithm in a row. In this case it will run all of the algoritms\n\nOnly one of the arguments is required.\n";
 
-enum Algs {FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT}; 
+enum Algs {FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT, HPF_NO_PREEMPT_AGING, HPF_PREEMPT_AGING}; 
 
 typedef struct Processes {
     int numProcs;
@@ -66,30 +66,38 @@ Processes *getProcesses() {
  * @param processes
  *      a reference to an array of processes to run the algorithm on
  */
-void runProcesses(int type, Processes **processes) {
+void runProcesses(int type, Processes *processes) {
     switch(type) {
         case FCFS:
-            doFCFS((*processes)->procs, (*processes)->numProcs);
+            //doFCFS(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case SJF:
-            doSJF((*processes)->procs, (*processes)->numProcs);
+            //doSJF(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case SRT:
-            doSRT((*processes)->procs, (*processes)->numProcs);
+            //doSRT(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case RR:
-            doRR((*processes)->procs, (*processes)->numProcs);
+            //doRR(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case HPF_NO_PREEMPT:
-            doHPF((*processes)->procs, (*processes)->numProcs, 0);
+            doHPF(processes->procs, processes->numProcs, 0, 0);
             printf("\n");
             break;
         case HPF_PREEMPT:
-            doHPF((*processes)->procs, (*processes)->numProcs, 1);
+            doHPF(processes->procs, processes->numProcs, 1, 0);
+            printf("\n");
+            break;
+        case HPF_NO_PREEMPT_AGING:
+            doHPF(processes->procs, processes->numProcs, 0, 1);
+            printf("\n");
+            break;
+        case HPF_PREEMPT_AGING:
+            doHPF(processes->procs, processes->numProcs, 1, 1);
             printf("\n");
             break;
     }
@@ -108,11 +116,11 @@ void run(int type) {
     if(type < 0) { 
         for(j = 0; j < NUM_ALGS; j++) { 
             for(i = 0; i > type; i--) {
-                runProcesses(j, &processes);
+                runProcesses(j, processes);
             }
         }
     } else {
-        runProcesses(type, &processes);
+        runProcesses(type, processes);
     }
     free(processes->procs);
     processes->procs = NULL;
@@ -149,6 +157,10 @@ int parseArgs(int argc, char *argv[]) {
             type = HPF_NO_PREEMPT;
         } else if(strcmp(argv[1], "HPF_PREEMPT") == 0) {
             type = HPF_PREEMPT;
+        } else if(strcmp(argv[1], "HPF_NO_PREEMPT_AGING") == 0) {
+            type = HPF_NO_PREEMPT_AGING;
+        } else if(strcmp(argv[1], "HPF_PREEMPT_AGING") == 0) {
+            type = HPF_PREEMPT_AGING;
         } else {
             fprintf(stderr, "Unrecognized argument: %s\n", argv[1]);
             printHelpText(argv[0]);

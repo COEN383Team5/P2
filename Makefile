@@ -1,5 +1,5 @@
 CXX			:= g++
-CXXFLAGS	:= -Wall -O3
+CXXFLAGS	:= -Wall -g
 SRC_SUFFIX	:= c
 SRCS		:= $(patsubst src/%.$(SRC_SUFFIX), %.$(SRC_SUFFIX), $(wildcard src/*.$(SRC_SUFFIX)))
 OBJ_DIR		:= obj/

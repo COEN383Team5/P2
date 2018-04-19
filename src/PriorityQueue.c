@@ -39,6 +39,7 @@ ProcInfo *getNextProc(PriorityQueue **pq) {
 	ProcInfo *temp = NULL;
 	for(i = 0; i < (*pq)->numPriorities; i++) {
 		if((temp = pop((*pq)->queues[i])) != NULL) {
+            (*pq)->numInQueues--;
 			break; // found a valid ProcInfo
 		}
 	}
