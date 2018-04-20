@@ -7,6 +7,10 @@
 #define AGING_TIME 5
 
 void giveQuantaToProc(ProcInfo *proc, int curTime) {
+    if(proc->lastRunTime != 0 && proc->lastRunTime != curTime-1) {
+        // this process was preempted
+        proc->totalWaitTime += curTime-proc->lastRunTime;
+    }
     if(proc->completedRunTime == 0) {
         proc->totalWaitTime += curTime-proc->arrivalTime;
         proc->startTime = curTime;
@@ -31,7 +35,7 @@ void adjustPriorities(PriorityQueue *pq, int curTime) {
 void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     Stack *preemptedProcs;
     int timeChart[10240];
-    ProcInfo *temp, *curRun = NULL, *procCopy = (ProcInfo *)malloc(numProcs*sizeof(ProcInfo));
+    ProcInfo *temp, *curRun = NULL, procCopy[numProcs];
     ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
     int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
     PriorityQueue *pq = initializePriorityQueue(NUM_PRIORITIES);	
@@ -54,6 +58,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
                     && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
                     && procCopy[nextProc].priority < curRun->priority
               ) {
+                curRun->timesWaited++;
                 addToStack(preemptedProcs, curRun);
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
                 curRun = &procCopy[nextProc++];
@@ -64,7 +69,6 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
         }
         if(curRun == NULL) {
             if((temp = popStack(preemptedProcs)) != NULL) {
-                printf("Running proc that was preempted %d\n", temp->id);
                 curRun = temp;
                 temp = NULL;
             } else if((curRun = getNextProc(pq)) == NULL && curTime > desiredQuanta) {
@@ -100,6 +104,4 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     finished = NULL;
     cleanupPriorityQueue(pq);
     pq = NULL;
-    free(procCopy);
-    procCopy = NULL;
 }
