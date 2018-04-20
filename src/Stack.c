@@ -42,11 +42,11 @@ ProcInfo *popStack(Stack *s) {
     }
 }
 
-void printStack(Stack *s) {
+void printStack(Stack *s, FILE *stream) {
     int i;
-    printf("Printing stack with elements %d, %d: ", s->numElements, s->index);
+    fprintf(stream, "Printing stack with elements %d, %d: ", s->numElements, s->index);
     for(i = s->index-1; i >= 0; i--) {
-        printf("%d ", s->procs[i]->id);
+        fprintf(stream, "%d ", s->procs[i]->id);
     }
-    printf("\n");
+    fprintf(stream, "\n");
 }
