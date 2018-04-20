@@ -75,13 +75,9 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
                 // no more procs to run
                 break;
             } 
-            if(curRun != NULL) {
-                timeChart[chartIndex++] = curRun->id;
-            } else {
-                fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
-            }
         }
         if(curRun != NULL) {
+            timeChart[chartIndex++] = curRun->id;
             giveQuantaToProc(curRun, curTime);
             if(curRun->completedRunTime > curRun->totalRunTime) {
                 finished[finishedIndex++] = curRun;
