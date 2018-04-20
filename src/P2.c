@@ -7,7 +7,7 @@
 //#include "FCFS.h"
 //#include "SJF.h"
 //#include "SRT.h"
-//#include "RR.h"
+#include "RR.h"
 #include "HPF.h"
 
 // this is (1000+10)/2
@@ -82,7 +82,7 @@ void runProcesses(int type, Processes *processes) {
             printf("\n");
             break;
         case RR:
-            //doRR(processes->procs, processes->numProcs);
+            doRR(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case HPF_NO_PREEMPT:

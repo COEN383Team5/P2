@@ -1,11 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "RR.h"
+#include "Stack.h"
 #include "Queue.h"
 
 void doRR(ProcInfo *procs, int numProcs) {
     Queue *rrQ;
     Stack *preemptedProcs;
-    ProcInfo procCopy[numProcs], *curRun = NULL;
+    ProcInfo procCopy[numProcs], *temp, *curRun = NULL;
     ProcInfo **finished = (ProcInfo **)calloc(numProcs, sizeof(ProcInfo*));
     int timeChart[TIME_CHART_SIZE], curTime = 0, chartIndex = 0, finishedIndex = 0, nextProc = 0;
 
@@ -19,17 +22,17 @@ void doRR(ProcInfo *procs, int numProcs) {
     // only quit when there are not more processes to run
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
-            if(preemptive && curRun != NULL 
+            if(curRun != NULL 
                     && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
-                    && procCopy[nextProc].priority < curRun->priority
               ) { 
+              // preempting
                 curRun->timesWaited++;
                 addToStack(preemptedProcs, curRun);
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
                 curRun = &procCopy[nextProc++];
                 timeChart[chartIndex++] = curRun->id;
             } else {
-                addProc(pq, &procCopy[nextProc++]); 
+                addToQueue(rrQ, &procCopy[nextProc++]); 
             }
         }
         if(curRun == NULL) {
@@ -57,8 +60,8 @@ void doRR(ProcInfo *procs, int numProcs) {
         curTime++;
     }
 
-    printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
-    cleaupStack(preemptedProcs);
+    printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
+    cleanupStack(preemptedProcs);
     preemptedProcs = NULL;
     free(finished);
     finished = NULL;
