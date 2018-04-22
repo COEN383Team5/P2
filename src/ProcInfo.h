@@ -25,6 +25,8 @@ void quickSort(ProcInfo **procs, int low, int high);
 
 void sortByArrivalTime(ProcInfo **procs, int numProcs); 
 
+void giveQuantaToProc(ProcInfo *proc, int curTime);
+
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream); 
 
 void printProcsWithStats(ProcInfo *procs, int numProcs, FILE *stream); 

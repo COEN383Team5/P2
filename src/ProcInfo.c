@@ -33,6 +33,19 @@ void sortByArrivalTime(ProcInfo **procs, int numProcs) {
     quickSort(procs, 0, numProcs-1);   
 }
 
+void giveQuantaToProc(ProcInfo *proc, int curTime) {
+    if(proc->lastRunTime != 0 && proc->lastRunTime != curTime-1) {
+        proc->totalWaitTime += curTime-proc->lastRunTime;
+    }
+    if(proc->completedRunTime == 0) {
+        proc->totalWaitTime += curTime-proc->arrivalTime;
+        proc->startTime = curTime;
+        proc->responseTime = proc->totalWaitTime;
+    }
+    proc->completedRunTime++;
+    proc->lastRunTime = curTime;
+}
+
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
     int i;
     for(i = 0; i < numProcs; i++) {
