@@ -15,6 +15,7 @@ typedef struct ProcInfo {
     double responseTime;
     double totalWaitTime;
     int priority;
+    int timesWaited;
     // the last time it started running
     int lastRunTime;
 } ProcInfo;
