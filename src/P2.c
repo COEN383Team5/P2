@@ -5,7 +5,7 @@
 #include <string.h>
 #include "ProcInfo.h"
 //#include "FCFS.h"
-//#include "SJF.h"
+#include "SJF.h"
 //#include "SRT.h"
 #include "RR.h"
 #include "HPF.h"
@@ -74,7 +74,7 @@ void runProcesses(int type, Processes *processes) {
             printf("\n");
             break;
         case SJF:
-            //doSJF(processes->procs, processes->numProcs);
+            doSJF(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case SRT:
