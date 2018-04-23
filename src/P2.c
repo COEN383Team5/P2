@@ -5,10 +5,10 @@
 #include <string.h>
 #include "ProcInfo.h"
 //#include "FCFS.h"
-//#include "SJF.h"
+#include "SJF.h"
 //#include "SRT.h"
 //#include "RR.h"
-#include "HPF.h"
+//#include "HPF.h"
 
 // this is (1000+10)/2
 #define MAX_PROCS 1000
@@ -74,7 +74,7 @@ void runProcesses(int type, Processes *processes) {
             printf("\n");
             break;
         case SJF:
-            //doSJF(processes->procs, processes->numProcs);
+            doSJF(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case SRT:
@@ -86,19 +86,19 @@ void runProcesses(int type, Processes *processes) {
             printf("\n");
             break;
         case HPF_NO_PREEMPT:
-            doHPF(processes->procs, processes->numProcs, 0, 0);
+            //doHPF(processes->procs, processes->numProcs, 0, 0);
             printf("\n");
             break;
         case HPF_PREEMPT:
-            doHPF(processes->procs, processes->numProcs, 1, 0);
+            //doHPF(processes->procs, processes->numProcs, 1, 0);
             printf("\n");
             break;
         case HPF_NO_PREEMPT_AGING:
-            doHPF(processes->procs, processes->numProcs, 0, 1);
+            //doHPF(processes->procs, processes->numProcs, 0, 1);
             printf("\n");
             break;
         case HPF_PREEMPT_AGING:
-            doHPF(processes->procs, processes->numProcs, 1, 1);
+            //doHPF(processes->procs, processes->numProcs, 1, 1);
             printf("\n");
             break;
     }
