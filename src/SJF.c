@@ -4,27 +4,15 @@
 #include "SJF.h"
 
 
-int getProcWithShortestJob(AlgObject *a) {
-    int i, shortest = 0;
-    float temp = a->started[0]->totalRunTime;
-    float shortestVal = temp;
-    for(i = 1; i < a->startedIndex; i++) {
-        temp = a->started[i]->totalRunTime;
-        if(shortestVal > temp) {
-            shortestVal = temp;
-            shortest = i;
-        }
-    }
-    return shortest;
-}
-
 int getShortestJobIndex(AlgObject *a) {
     int result = 0;
 
     // find the first non-null entry to return as a default
     while (a->started[result] == NULL) {
         result++;
-        assert(result <= a->startedIndex);
+        if (result >= a->startedIndex) {
+            return -1;
+        }
     }
 
     // find an entry with a shorter job if it exists
@@ -56,8 +44,16 @@ void doSJF(ProcInfo *procs, int numProcs) {
             a->started[a->startedIndex++] = &(a->unstarted[nextUnstartedProc++]);
         }
 
-        // choose the shortest job from the arrived processes and run it
+        // choose the shortest job from the arrived processes
         int curRunIndex = getShortestJobIndex(a);
+
+        // if getShortestJobIndex returns -1, no new procs have arrived
+        if (curRunIndex == -1) {
+            curTime++;
+            continue;
+        }
+
+        // if a job was found, run it
         ProcInfo *curRun = a->started[curRunIndex];
         int newTime = curTime + ceil(curRun->totalRunTime);
         for (int j = curTime; j < newTime; j++) {
@@ -68,10 +64,11 @@ void doSJF(ProcInfo *procs, int numProcs) {
         curRun->completedRunTime = newTime - curTime;
         curRun->startTime = curTime;
         curRun->responseTime = curTime - curRun->arrivalTime;
-        curRun->totalWaitTime = 0;  // what is this?
-        curRun->timesWaited = 0;    // what is this?
+        curRun->totalWaitTime = curRun->responseTime;
+        curRun->timesWaited = 1;    // what is this?
         curRun->lastRunTime = curTime;
 
+        a->timeSinceStart = curTime + curRun->totalRunTime;
         curTime = newTime;
 
         // move the process that just ran from the started to the finished queue
