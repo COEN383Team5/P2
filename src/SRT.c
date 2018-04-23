@@ -1,74 +1,65 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <float.h>
 #include "SRT.h"
 
-int getProcWithShortestRemainingTime(AlgObject *a) {
-    int i, shortest = 0;
-    float temp /*= a->started[0]->totalRunTime-a->started[0]->completedRunTime*/;
-    float shortestVal = FLT_MAX;
-    for(i = 0; i < a->startedIndex; i++) {
-        if (a->started[i] == NULL) {
-            continue;
-        }
-        temp = a->started[i]->totalRunTime-a->started[i]->completedRunTime;
-        if(shortestVal > temp) {
-            shortestVal = temp;
-            shortest = i;
-        }
-    }
-    return shortest;
-}
-
 void doSRT(ProcInfo *procs, int numProcs) {
-    // sjp = index to shortestJobProcess in a->started
-    int sjp, curTime = 0, nextProc = 0;
-    AlgObject *a = createAlgObject(procs, numProcs);
-    ProcInfo *curRun = NULL;
+    Stack *preemptedProcs;
+    int timeChart[10240];
+    ProcInfo *temp, *curRun = NULL, procCopy[numProcs];
+    ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
+    int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
+
+    memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
+    preemptedProcs = initializeStack();
 
     printf("Starting shortest remaining time algorithm\n\n");
     printProcs(procs, numProcs, stdout);
-    
+
+    // only quit when there are not more processes to run
     while(1) {
-        // schedule processes
-        if(curTime < desiredQuanta && nextProc < numProcs && a->unstarted[nextProc].arrivalTime <= curTime) {
+        if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
             if(curRun != NULL 
-                    && a->unstarted[nextProc].totalRunTime < curRun->totalRunTime - curRun->completedRunTime
-            ) {
-                // preempt
-                // curRun->timesWaited++;
-                printf("%d was preempted by %d\n", curRun->id, a->unstarted[nextProc].id);
-                curRun = &(a->unstarted[nextProc++]);
-                // a->timeChart[a->timeChartIndex++] = curRun->id; // does this line make it run for 2 quanta?
-                a->started[a->startedIndex++] = curRun;
+                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+              ) {
+                curRun->timesWaited++;
+                addToStack(preemptedProcs, curRun);
+                
+                printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
+                curRun = &procCopy[nextProc++];
+                timeChart[chartIndex++] = curRun->id;
             } else {
-               a->started[a->startedIndex++] = &(a->unstarted[nextProc++]);
+                addToStack(preemptedProcs, &procCopy[nextProc++]); 
             }
         }
-
-        // run processes
-        if (curRun == NULL) {
-            sjp = getProcWithShortestRemainingTime(a);
-            if (a->started[sjp] != NULL) {
-                curRun = a->started[sjp];
-            } else if (a->finishedIndex == numProcs && curTime > desiredQuanta) {
+        if(curRun == NULL) {
+            if((temp = getSmallestRemainingTimeOnStack(preemptedProcs)) != NULL) {
+                curRun = temp;
+                temp = NULL;
+            } else if((curRun = getSmallestRemainingTimeOnStack(preemptedProcs)) == NULL && curTime > desiredQuanta) {
+                // no more procs to run
                 break;
-            }
+            } 
         }
-
-        if (curRun != NULL) {
-            a->timeChart[a->timeChartIndex++] = curRun->id;
+        if(curRun != NULL) {
+            timeChart[chartIndex++] = curRun->id;
             giveQuantaToProc(curRun, curTime);
             if(curRun->completedRunTime > curRun->totalRunTime) {
-                a->started[a->startedIndex--] = NULL;
-                printf("proc: %d; finishedIndex: %d\n", curRun->id, a->finishedIndex);
-                a->finished[a->finishedIndex++] = curRun;
+                finished[finishedIndex++] = curRun;
                 curRun = NULL;
             }
+        } else {
+            fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
         }
 
         curTime++;
     }
 
-    printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
-    // cleanupAlgObject(&a);
+    printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
+    // cleanupStack(preemptedProcs);
+    // preemptedProcs = NULL;
+//  note that finished[i] doesn't have to be freed because it points to a part of procCopy
+    free(finished);
+    finished = NULL;
 }
