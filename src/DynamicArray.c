@@ -3,7 +3,7 @@
 #include <string.h>
 #include "DynamicArray.h"
 
-void resize(DynamicArray *s) {
+void resizeDynamicArray(DynamicArray *s) {
     ProcInfo **temp = (ProcInfo **)calloc(s->size<<1, sizeof(ProcInfo*));
     memcpy(temp, s->procs, sizeof(ProcInfo *)*s->size);
     s->size <<= 1;
@@ -27,7 +27,7 @@ void cleanupDynamicArray(DynamicArray *s) {
 
 void addToDynamicArray(DynamicArray *s, ProcInfo *p) {
     if(s->numElements+1 > s->size) {
-       resize(s); 
+       resizeDynamicArray(s); 
     }
     s->procs[s->index++] = p;
     s->numElements++;
