@@ -6,20 +6,6 @@
 
 #define AGING_TIME 5
 
-void giveQuantaToProc(ProcInfo *proc, int curTime) {
-    if(proc->lastRunTime != 0 && proc->lastRunTime != curTime-1) {
-        // this process was preempted
-        proc->totalWaitTime += curTime-proc->lastRunTime;
-    }
-    if(proc->completedRunTime == 0) {
-        proc->totalWaitTime += curTime-proc->arrivalTime;
-        proc->startTime = curTime;
-        proc->responseTime = proc->totalWaitTime;
-    }
-    proc->completedRunTime++;
-    proc->lastRunTime = curTime;
-}
-
 void adjustPriorities(PriorityQueue *pq, int curTime) {
     int i;
     ProcInfo *p;
@@ -34,7 +20,7 @@ void adjustPriorities(PriorityQueue *pq, int curTime) {
 
 void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     Stack *preemptedProcs;
-    int timeChart[10240];
+    int timeChart[TIME_CHART_SIZE];
     ProcInfo *temp, *curRun = NULL, procCopy[numProcs];
     ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
     int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
