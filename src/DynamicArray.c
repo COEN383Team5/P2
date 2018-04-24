@@ -1,7 +1,12 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <algorithm>
 #include "DynamicArray.h"
+
+bool compare(ProcInfo *a, ProcInfo *b) {
+    return (a->totalRunTime - a->completedRunTime) > (b->totalRunTime - b->completedRunTime);
+}
 
 void resizeDynamicArray(DynamicArray *s) {
     ProcInfo **temp = (ProcInfo **)calloc(s->size<<1, sizeof(ProcInfo*));
@@ -33,26 +38,8 @@ void addToDynamicArray(DynamicArray *s, ProcInfo *p) {
     s->numElements++;
 }
 
-void sortByRemainingTime(ProcInfo **procs, int numProcs) {
-    int i, j, m;
-
-    ProcInfo* temp;
-
-    for(i = 0; j < numProcs; i++) {
-        for (j = i, m = i; j < numProcs; j++) {
-            if (((*procs)[j].totalRunTime - (*procs)[j].completedRunTime) > ((*procs)[m].totalRunTime - (*procs)[m].completedRunTime)) {
-                m = j;
-            }
-        }
-
-        temp = procs[i];
-        procs[i] = procs[m];
-        procs[m] = temp;
-    }
-}
-
 ProcInfo *getSmallestRemainingTime(DynamicArray *s) {
-    sortByRemainingTime(s->procs, s->numElements);
+    std::sort(s->procs, s->procs+s->numElements, compare);
     return popDynamicArray(s);
 }
 
