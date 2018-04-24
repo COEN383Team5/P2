@@ -15,6 +15,7 @@ typedef struct ProcInfo {
     double responseTime;
     double totalWaitTime;
     int priority;
+    int timesWaited;
     // the last time it started running
     int lastRunTime;
 } ProcInfo;
@@ -24,6 +25,8 @@ int partition(ProcInfo **procs, int low, int high);
 void quickSort(ProcInfo **procs, int low, int high);
 
 void sortByArrivalTime(ProcInfo **procs, int numProcs); 
+
+void giveQuantaToProc(ProcInfo *proc, int curTime);
 
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream); 
 

@@ -33,16 +33,29 @@ void sortByArrivalTime(ProcInfo **procs, int numProcs) {
     quickSort(procs, 0, numProcs-1);   
 }
 
+void giveQuantaToProc(ProcInfo *proc, int curTime) {
+    if(proc->lastRunTime != 0 && proc->lastRunTime != curTime-1) {
+        proc->totalWaitTime += curTime-proc->lastRunTime;
+    }
+    if(proc->completedRunTime == 0) {
+        proc->totalWaitTime += curTime-proc->arrivalTime;
+        proc->startTime = curTime;
+        proc->responseTime = proc->totalWaitTime;
+    }
+    proc->completedRunTime++;
+    proc->lastRunTime = curTime;
+}
+
 void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
     int i;
     for(i = 0; i < numProcs; i++) {
-        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tpriority: %d\n", procs[i].id, procs[i].arrivalTime, procs[i].priority);
+        fprintf(stream, "Process id: %3d,\tatime: %.4f,\tpriority: %d,\ttotalRunTime: %4f\n", procs[i].id, procs[i].arrivalTime, procs[i].priority, procs[i].totalRunTime);
     }
 }
 
 void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int timeChartIndex, int numProcs, double timeSinceStart) {
     int i;
-    double waitTimeTemp, turnAroundTemp;
+    double turnAroundTemp;
     printf("\nTime chart:\n");
     for(i = 0; i < timeChartIndex; i++) {
         printf("%d ", timeChart[i]);
@@ -50,10 +63,9 @@ void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int ti
     printf("\n\n");
     printf("Stats for procs:\n");
     for(i = 0; i < finishedIndex; i++) {
-       waitTimeTemp = ((double)finished[i]->totalWaitTime)/ceil(finished[i]->totalRunTime);
        turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
 
-       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, waitTimeTemp, finished[i]->responseTime);
+       printf("Proc id: %3d,\tAverage turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\n", finished[i]->id, turnAroundTemp, finished[i]->totalWaitTime/finished[i]->timesWaited, finished[i]->responseTime);
     }
     printf("Throughput: %.4f processes/quanta\n", numProcs/timeSinceStart);
 }
