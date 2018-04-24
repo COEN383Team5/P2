@@ -9,6 +9,7 @@ void doFCFS(ProcInfo *procs, int numProcs) {
     printf("Starting first come first serve algorithm\n\n");
     printProcs(procs, numProcs, stdout);
 
+    //TODO
     for(int i = 0; i < numProcs; i++) { //run through all the processes
 	// update the list of arrived processes
         while (nextUnstartedProc < numProcs && a->unstarted[nextUnstartedProc].arrivalTime <= curTime) {
