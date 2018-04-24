@@ -45,7 +45,7 @@ void doSRT(ProcInfo *procs, int numProcs) {
         if(curRun != NULL) {
             timeChart[chartIndex++] = curRun->id;
             giveQuantaToProc(curRun, curTime);
-            if(curRun->completedRunTime > curRun->totalRunTime) {
+            if(curRun->completedRunTime >= curRun->totalRunTime) {
                 finished[finishedIndex++] = curRun;
                 curRun = NULL;
             }
