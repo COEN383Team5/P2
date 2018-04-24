@@ -3,9 +3,7 @@
 
 #include "ProcInfo.h"
 #include "AlgObject.h"
-#include "Stack.h"
-
-int getProcWithShortestRemainingTime(AlgObject *a);
+#include "DynamicArray.h"
 
 void doSRT(ProcInfo *procs, int numProcs);
 

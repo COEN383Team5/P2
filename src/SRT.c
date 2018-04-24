@@ -5,14 +5,14 @@
 #include "SRT.h"
 
 void doSRT(ProcInfo *procs, int numProcs) {
-    Stack *preemptedProcs;
+    DynamicArray *waitingProcs;
     int timeChart[10240];
     ProcInfo *temp, *curRun = NULL, procCopy[numProcs];
     ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
     int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
 
     memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
-    preemptedProcs = initializeStack();
+    waitingProcs = initializeDynamicArray();
 
     printf("Starting shortest remaining time algorithm\n\n");
     printProcs(procs, numProcs, stdout);
@@ -24,20 +24,20 @@ void doSRT(ProcInfo *procs, int numProcs) {
                     && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
               ) {
                 curRun->timesWaited++;
-                addToStack(preemptedProcs, curRun);
+                addToDynamicArray(waitingProcs, curRun);
                 
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
                 curRun = &procCopy[nextProc++];
                 timeChart[chartIndex++] = curRun->id;
             } else {
-                addToStack(preemptedProcs, &procCopy[nextProc++]); 
+                addToDynamicArray(waitingProcs, &procCopy[nextProc++]); 
             }
         }
         if(curRun == NULL) {
-            if((temp = getSmallestRemainingTimeOnStack(preemptedProcs)) != NULL) {
+            if((temp = getSmallestRemainingTime(waitingProcs)) != NULL) {
                 curRun = temp;
                 temp = NULL;
-            } else if((curRun = getSmallestRemainingTimeOnStack(preemptedProcs)) == NULL && curTime > desiredQuanta) {
+            } else if((curRun = getSmallestRemainingTime(waitingProcs)) == NULL && curTime > desiredQuanta) {
                 // no more procs to run
                 break;
             } 
@@ -57,8 +57,8 @@ void doSRT(ProcInfo *procs, int numProcs) {
     }
 
     printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
-    // cleanupStack(preemptedProcs);
-    // preemptedProcs = NULL;
+    cleanupDynamicArray(waitingProcs);
+    waitingProcs = NULL;
 //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
     free(finished);
     finished = NULL;
