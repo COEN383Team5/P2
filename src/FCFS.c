@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "FCFS.h"
 #include "AlgObject.h"
 
@@ -15,7 +16,7 @@ void doFCFS(ProcInfo *procs, int numProcs) {
         while (nextUnstartedProc < numProcs && a->unstarted[nextUnstartedProc].arrivalTime <= curTime) {
             a->started[a->startedIndex++] = &(a->unstarted[nextUnstartedProc++]);
         }
-    }
+    
 
     	//run jobs
         ProcInfo *curRun = a->started[i];
@@ -37,11 +38,12 @@ void doFCFS(ProcInfo *procs, int numProcs) {
 
         // move the recently run process from started to finished queue
         a->finished[a->finishedIndex++] = curRun;
-        a->started[curRunIndex] = NULL;
+        a->started[i] = NULL;
 
         if (curTime > desiredQuanta) {
             break;
         }
+    }
 
 
     printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
