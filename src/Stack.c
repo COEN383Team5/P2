@@ -26,7 +26,7 @@ void cleanupStack(Stack *s) {
 }
 
 void addToStack(Stack *s, ProcInfo *p) {
-    if(s->numElements+1 < s->size) {
+    if(s->numElements+1 > s->size) {
        resize(s); 
     }
     s->procs[s->index++] = p;
