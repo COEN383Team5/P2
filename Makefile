@@ -1,7 +1,12 @@
 CXX			:= g++
+<<<<<<< HEAD
 CXXFLAGS	:= -Wall -g
 SRC_SUFFIX	:= c
 SRCS		:= $(patsubst src/%.$(SRC_SUFFIX), %.$(SRC_SUFFIX), $(wildcard src/*.$(SRC_SUFFIX)))
+=======
+CXXFLAGS	:= -Wall -O3
+SRCS		:= $(patsubst src/%.c, %.c, $(wildcard src/*.c))
+>>>>>>> SRT
 OBJ_DIR		:= obj/
 BIN_DIR		:= bin/
 VPATH		:= src:${OBJ_DIR}

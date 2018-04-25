@@ -1,30 +1,80 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <float.h>
 #include "SRT.h"
 
-int getProcWithShortestRemainingTime(AlgObject *a) {
-    int i, shortest = 0;
-    float temp = a->started[0]->totalRunTime-a->started[0]->completedRunTime;
-    float shortestVal = temp;
-    for(i = 1; i < a->startedIndex; i++) {
-        temp = a->started[i]->totalRunTime-a->started[i]->completedRunTime;
-        if(shortestVal > temp) {
-            shortestVal = temp;
-            shortest = i;
-        }
-    }
-    return shortest;
-}
-
 void doSRT(ProcInfo *procs, int numProcs) {
-    // sjp = index to shortestJobProcess in a->started
-    int sjp;
-    AlgObject *a = createAlgObject(procs, numProcs);
+    DynamicArray *waitingProcs;
+    Stack *preemptCandidates;
+    int timeChart[10240];
+    ProcInfo *temp = NULL, *curRun = NULL, procCopy[numProcs];
+    ProcInfo **finished = (ProcInfo**)calloc(numProcs,sizeof(ProcInfo*));
+    int finishedIndex = 0, nextProc = 0, curTime = 0, chartIndex = 0;
+
+    memcpy(procCopy, procs, numProcs*sizeof(ProcInfo));
+    waitingProcs = initializeDynamicArray();
+    preemptCandidates = initializeStack();
 
     printf("Starting shortest remaining time algorithm\n\n");
     printProcs(procs, numProcs, stdout);
-    
-    // TODO
 
-    printResults(a->finished, a->finishedIndex, a->timeChart, a->timeChartIndex, a->numProcs, a->timeSinceStart);
-    cleanupAlgObject(&a);
+    // only quit when there are not more processes to run
+    while(1) {
+        if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
+            if (curRun != NULL) {
+                while(nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
+                    addToStack(preemptCandidates, &procCopy[nextProc++]);
+                }
+
+                while((temp = popStack(preemptCandidates)) != NULL) {
+                    if (temp->totalRunTime < curRun->totalRunTime-curRun->completedRunTime) {
+                        curRun->timesWaited++;
+                        addToDynamicArray(waitingProcs, curRun);
+                        printf("%d was preempted by %d\n", curRun->id, temp->id);
+                        curRun = temp;
+                        temp = NULL;
+                    } else {
+                        addToDynamicArray(waitingProcs, temp);
+                        temp = NULL;
+                    }
+                }
+
+            } else {
+                while(nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
+                    addToDynamicArray(waitingProcs, &procCopy[nextProc++]); 
+                }
+            }
+        }
+        if(curRun == NULL) {
+            if((temp = getSmallestRemainingTime(waitingProcs)) != NULL) {
+                curRun = temp;
+                temp = NULL;
+            } else if((curRun = getSmallestRemainingTime(waitingProcs)) == NULL && curTime > desiredQuanta) {
+                // no more procs to run
+                break;
+            } 
+        }
+        if(curRun != NULL) {
+            timeChart[chartIndex++] = curRun->id;
+            giveQuantaToProc(curRun, curTime);
+            if(curRun->completedRunTime >= curRun->totalRunTime) {
+                finished[finishedIndex++] = curRun;
+                curRun = NULL;
+            }
+        } else {
+            fprintf(stderr, "Processor was unused during %d quantum\n", curTime);
+        }
+
+        curTime++;
+    }
+
+    printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
+    cleanupDynamicArray(waitingProcs);
+    waitingProcs = NULL;
+    cleanupStack(preemptCandidates);
+    preemptCandidates = NULL;
+//  note that finished[i] doesn't have to be freed because it points to a part of procCopy
+    free(finished);
+    finished = NULL;
 }
