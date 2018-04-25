@@ -4,7 +4,7 @@
 #include <time.h>
 #include <string.h>
 #include "ProcInfo.h"
-//#include "FCFS.h"
+#include "FCFS.h"
 #include "SJF.h"
 #include "SRT.h"
 #include "RR.h"
@@ -70,7 +70,7 @@ Processes *getProcesses() {
 void runProcesses(int type, Processes *processes) {
     switch(type) {
         case FCFS:
-            //doFCFS(processes->procs, processes->numProcs);
+            doFCFS(processes->procs, processes->numProcs);
             printf("\n");
             break;
         case SJF:
@@ -140,7 +140,7 @@ int parseArgs(int argc, char *argv[]) {
         printHelpText(argv[0]);
         exit(-1);
     } else if(argc > 2) {
-        fprintf(stderr, "Too many arguements. ");
+        fprintf(stderr, "Too many arguments. ");
         printHelpText(argv[0]);
         exit(-1);
     }
