@@ -22,11 +22,13 @@ void doSRT(ProcInfo *procs, int numProcs) {
     // only quit when there are not more processes to run
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
+        	// handle the incoming process
             if (curRun != NULL) {
                 while(nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
                     addToStack(preemptCandidates, &procCopy[nextProc++]);
                 }
 
+                // check if the currently running process needs to be preempted by any of the incoming processes
                 while((temp = popStack(preemptCandidates)) != NULL) {
                     if (temp->totalRunTime < curRun->totalRunTime-curRun->completedRunTime) {
                         curRun->timesWaited++;
@@ -47,6 +49,7 @@ void doSRT(ProcInfo *procs, int numProcs) {
             }
         }
         if(curRun == NULL) {
+        	// schedule the process with the shortest remainging time; quit if done
             if((temp = getSmallestRemainingTime(waitingProcs)) != NULL) {
                 curRun = temp;
                 temp = NULL;
@@ -56,6 +59,7 @@ void doSRT(ProcInfo *procs, int numProcs) {
             } 
         }
         if(curRun != NULL) {
+        	// run the process for this quanta
             timeChart[chartIndex++] = curRun->id;
             giveQuantaToProc(curRun, curTime);
             if(curRun->completedRunTime >= curRun->totalRunTime) {
