@@ -6,6 +6,35 @@
 
 #define AGING_TIME 5
 
+void printQueueResults(ProcInfo *procCopy, int numProcs, int curTime) {
+    double turnAroundTimes[NUM_PRIORITIES], waitingTimes[NUM_PRIORITIES], responseTimes[NUM_PRIORITIES], latestRunTime[NUM_PRIORITIES];
+    int i, arrIndex, procsPerQueue[NUM_PRIORITIES];
+    memset(turnAroundTimes, 0, NUM_PRIORITIES*sizeof(double));
+    memset(waitingTimes, 0, NUM_PRIORITIES*sizeof(double));
+    memset(responseTimes, 0, NUM_PRIORITIES*sizeof(double));
+    memset(latestRunTime, 0, NUM_PRIORITIES*sizeof(double));
+    memset(procsPerQueue, 0, NUM_PRIORITIES*sizeof(int));
+
+    for(i = 0; i < numProcs; i++) {
+        arrIndex = procCopy[i].priority-1;
+        procsPerQueue[arrIndex]++;
+        turnAroundTimes[arrIndex] += procCopy[i].lastRunTime-procCopy[i].arrivalTime;
+        waitingTimes[arrIndex] += procCopy[i].totalWaitTime/procCopy[i].timesWaited;
+        responseTimes[arrIndex] += procCopy[i].responseTime;
+        if(latestRunTime[arrIndex] < procCopy[i].lastRunTime) {
+            latestRunTime[arrIndex] = procCopy[i].lastRunTime;
+        }
+    }
+    for(i = 0; i < NUM_PRIORITIES; i++) {
+        printf("Priority %d: Average turnaround time: %.4f,\tAverage waiting time: %.4f\tAverage response time %.4f\tThroughput %.4f process/quanta\n", 
+            i+1, 
+            turnAroundTimes[i]/procsPerQueue[i], 
+            waitingTimes[i]/procsPerQueue[i], 
+            responseTimes[i]/procsPerQueue[i], 
+            procsPerQueue[i]/latestRunTime[i]);
+    }
+}
+
 void adjustPriorities(PriorityQueue *pq, int curTime) {
     int i;
     ProcInfo *p;
@@ -79,6 +108,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     }
 
     printResults(finished, finishedIndex, timeChart, chartIndex, numProcs, curTime);
+    printQueueResults(procCopy, numProcs, curTime);
     cleanupStack(preemptedProcs);
     preemptedProcs = NULL;
 //  note that finished[i] doesn't have to be freed because it points to a part of procCopy
