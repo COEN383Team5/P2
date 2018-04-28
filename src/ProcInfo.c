@@ -57,6 +57,9 @@ void printProcs(ProcInfo *procs, int numProcs, FILE *stream) {
 void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int timeChartIndex, int numProcs, double timeSinceStart) {
     int i;
     double turnAroundTemp;
+
+    double avgTurnAround = 0, avgWaiting = 0, avgResponse = 0;
+
     printf("\nTime chart:\n");
     for(i = 0; i < timeChartIndex; i++) {
         printf("%d ", timeChart[i]);
@@ -66,7 +69,19 @@ void printResults(ProcInfo **finished, int finishedIndex, int *timeChart, int ti
     for(i = 0; i < finishedIndex; i++) {
        turnAroundTemp = finished[i]->totalWaitTime+finished[i]->completedRunTime;
 
-       printf("Proc id: %3d,\tTurnaround time: %.4f,\tWaiting time: %.4f\tResponse time %.4f\n", finished[i]->id, turnAroundTemp, finished[i]->totalWaitTime/finished[i]->timesWaited, finished[i]->responseTime);
+       avgTurnAround += turnAroundTemp;
+       avgWaiting += finished[i]->totalWaitTime/finished[i]->timesWaited;
+       avgResponse += finished[i]->responseTime;
+
+       printf("Proc id: %3d\tTurnaround time: %.4f\tWaiting time: %.4f\tResponse time: %.4f\n", 
+        finished[i]->id, turnAroundTemp, finished[i]->totalWaitTime/finished[i]->timesWaited, finished[i]->responseTime);
     }
+
+    avgTurnAround /= finishedIndex;
+    avgWaiting /= finishedIndex;
+    avgResponse /= finishedIndex;
+
+    printf("Average Turnaround time: %.4f\tAverage Waiting time: %.4f\tAverage Response time: %.4f\n", 
+        avgTurnAround, avgWaiting, avgResponse);
     printf("Throughput: %.4f processes/quanta\n", numProcs/timeSinceStart);
 }
