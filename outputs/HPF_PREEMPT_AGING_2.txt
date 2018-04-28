@@ -1,0 +1,54 @@
+Starting highest priority first algorithm with preemption
+
+Process id:   1,	atime: 0.0000,	priority: 2,	totalRunTime: 2.500000
+Process id:   2,	atime: 1.0000,	priority: 3,	totalRunTime: 6.800000
+Process id:   3,	atime: 4.0000,	priority: 3,	totalRunTime: 6.300000
+Process id:   4,	atime: 9.0000,	priority: 1,	totalRunTime: 8.900000
+Process id:   5,	atime: 14.0000,	priority: 1,	totalRunTime: 10.000000
+Process id:   6,	atime: 15.0000,	priority: 3,	totalRunTime: 2.900000
+Process id:   7,	atime: 16.0000,	priority: 2,	totalRunTime: 5.900000
+Process id:   8,	atime: 17.0000,	priority: 3,	totalRunTime: 0.300000
+Process id:   9,	atime: 17.0000,	priority: 2,	totalRunTime: 3.100000
+Process id:  10,	atime: 19.0000,	priority: 1,	totalRunTime: 0.800000
+Process id:  11,	atime: 19.0000,	priority: 1,	totalRunTime: 1.700000
+Process id:  12,	atime: 19.0000,	priority: 4,	totalRunTime: 3.800000
+Process id:  13,	atime: 20.0000,	priority: 2,	totalRunTime: 5.300000
+Process id:  14,	atime: 20.0000,	priority: 3,	totalRunTime: 5.800000
+Process id:  15,	atime: 22.0000,	priority: 2,	totalRunTime: 8.700000
+Process id:  16,	atime: 28.0000,	priority: 2,	totalRunTime: 5.100000
+Process id:  17,	atime: 29.0000,	priority: 1,	totalRunTime: 3.800000
+Process id:  18,	atime: 30.0000,	priority: 3,	totalRunTime: 3.900000
+Process id:  19,	atime: 31.0000,	priority: 1,	totalRunTime: 7.200000
+Process id:  20,	atime: 35.0000,	priority: 1,	totalRunTime: 7.400000
+
+Time chart:
+1 1 1 2 2 2 2 2 2 2 3 3 3 3 3 3 3 5 5 5 5 5 5 5 5 5 5 5 4 4 4 4 4 4 4 4 4 10 19 19 19 19 19 19 19 19 11 11 20 20 20 20 20 20 20 20 17 17 17 17 7 7 7 7 7 7 9 9 9 9 13 13 13 13 13 13 15 15 15 15 15 15 15 15 15 16 16 16 16 16 16 6 6 6 8 14 14 14 14 14 14 18 18 18 18 12 12 12 12 
+
+Stats for procs:
+Proc id:   1	Turnaround time: 3.0000	Waiting time: 0.0000	Response time: 0.0000
+Proc id:   2	Turnaround time: 9.0000	Waiting time: 2.0000	Response time: 2.0000
+Proc id:   3	Turnaround time: 13.0000	Waiting time: 6.0000	Response time: 6.0000
+Proc id:   5	Turnaround time: 14.0000	Waiting time: 3.0000	Response time: 3.0000
+Proc id:   4	Turnaround time: 28.0000	Waiting time: 19.0000	Response time: 19.0000
+Proc id:  10	Turnaround time: 19.0000	Waiting time: 18.0000	Response time: 18.0000
+Proc id:  19	Turnaround time: 15.0000	Waiting time: 7.0000	Response time: 7.0000
+Proc id:  11	Turnaround time: 29.0000	Waiting time: 27.0000	Response time: 27.0000
+Proc id:  20	Turnaround time: 21.0000	Waiting time: 13.0000	Response time: 13.0000
+Proc id:  17	Turnaround time: 31.0000	Waiting time: 27.0000	Response time: 27.0000
+Proc id:   7	Turnaround time: 50.0000	Waiting time: 44.0000	Response time: 44.0000
+Proc id:   9	Turnaround time: 53.0000	Waiting time: 49.0000	Response time: 49.0000
+Proc id:  13	Turnaround time: 56.0000	Waiting time: 50.0000	Response time: 50.0000
+Proc id:  15	Turnaround time: 63.0000	Waiting time: 54.0000	Response time: 54.0000
+Proc id:  16	Turnaround time: 63.0000	Waiting time: 57.0000	Response time: 57.0000
+Proc id:   6	Turnaround time: 79.0000	Waiting time: 76.0000	Response time: 76.0000
+Proc id:   8	Turnaround time: 78.0000	Waiting time: 77.0000	Response time: 77.0000
+Proc id:  14	Turnaround time: 81.0000	Waiting time: 75.0000	Response time: 75.0000
+Proc id:  18	Turnaround time: 75.0000	Waiting time: 71.0000	Response time: 71.0000
+Proc id:  12	Turnaround time: 90.0000	Waiting time: 86.0000	Response time: 86.0000
+Average Turnaround time: 43.5000	Average Waiting time: 38.0500	Average Response time: 38.0500
+Throughput: 0.1835 processes/quanta
+Priority 1: Average turnaround time: 46.6667,	Average waiting time: 42.1667	Average response time 42.1667	Throughput 0.1667 process/quanta
+Priority 2: Average turnaround time: 2.0000,	Average waiting time: 0.0000	Average response time 0.0000	Throughput 0.5000 process/quanta
+Priority 3: Average turnaround time: 8.0000,	Average waiting time: 2.0000	Average response time 2.0000	Throughput 0.1111 process/quanta
+Priority 4: Average turnaround time: -nan,	Average waiting time: -nan	Average response time -nan	Throughput -nan process/quanta
+
