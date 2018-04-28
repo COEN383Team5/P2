@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include "SJF.h"
 
-
+/**
+ * Given an AlgObject, traverses its queue of started processes and finds the
+ * one with the shortest total run time.
+ * Returns: the index of the shortest job, or -1 if there are no jobs.
+ */
 int getShortestJobIndex(AlgObject *a) {
     int result = 0;
 
@@ -28,11 +32,17 @@ int getShortestJobIndex(AlgObject *a) {
     return result;
 }
 
+/**
+ * Performs a simulation of the Shortest Job First scheduling algorithm given a
+ * list of processes and relevant information (e.g. arrival time, total run
+ * time, etc.).  Performance metrics are printed to stdout.
+ */
 void doSJF(ProcInfo *procs, int numProcs) {
 
     AlgObject *a = createAlgObject(procs, numProcs);
 
-    int curTime = 0, nextUnstartedProc = 0;
+    int curTime = 0;            // the current time, measured in quanta
+    int nextUnstartedProc = 0;  // the index into the queue of processes
 
     printf("Starting shortest job first algorithm\n\n");
     printProcs(procs, numProcs, stdout);
@@ -75,6 +85,7 @@ void doSJF(ProcInfo *procs, int numProcs) {
         a->finished[a->finishedIndex++] = curRun;
         a->started[curRunIndex] = NULL;
 
+        // don't schedule any jobs after desiredQuanta has elapsed
         if (curTime > desiredQuanta) {
             break;
         }
