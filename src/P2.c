@@ -14,7 +14,7 @@
 #define MAX_PROCS 1000
 #define NUM_ALGS 8
 
-char *helpText = "Usage:\n\t%s [algType | numRuns]\nWhere:\n\talgType is the name of an algorith to run. Possible options are:FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT, HPF_NO_PREEMPT_AGING, or HPF_PREEMPT_AGING\n\n\tnumRuns is the number of times you want to run each algorithm in a row. In this case it will run all of the algoritms\n\nOnly one of the arguments is required.\n";
+const char *helpText = "Usage:\n\t%s [algType | numRuns]\nWhere:\n\talgType is the name of an algorith to run. Possible options are:FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT, HPF_NO_PREEMPT_AGING, or HPF_PREEMPT_AGING\n\n\tnumRuns is the number of times you want to run each algorithm in a row. In this case it will run all of the algoritms\n\nOnly one of the arguments is required.\n";
 
 enum Algs {FCFS, SJF, SRT, RR, HPF_NO_PREEMPT, HPF_PREEMPT, HPF_NO_PREEMPT_AGING, HPF_PREEMPT_AGING}; 
 
