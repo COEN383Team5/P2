@@ -1,0 +1,59 @@
+Starting shortest remaining time algorithm
+
+Process id:   1,	atime: 0.0000,	priority: 2,	totalRunTime: 6.200000
+Process id:   2,	atime: 2.0000,	priority: 3,	totalRunTime: 0.400000
+Process id:   3,	atime: 2.0000,	priority: 1,	totalRunTime: 6.800000
+Process id:   4,	atime: 3.0000,	priority: 4,	totalRunTime: 0.300000
+Process id:   5,	atime: 3.0000,	priority: 3,	totalRunTime: 5.800000
+Process id:   6,	atime: 5.0000,	priority: 1,	totalRunTime: 8.000000
+Process id:   7,	atime: 8.0000,	priority: 4,	totalRunTime: 0.100000
+Process id:   8,	atime: 8.0000,	priority: 2,	totalRunTime: 9.600000
+Process id:   9,	atime: 8.0000,	priority: 3,	totalRunTime: 2.900000
+Process id:  10,	atime: 8.0000,	priority: 2,	totalRunTime: 0.800000
+Process id:  11,	atime: 8.0000,	priority: 3,	totalRunTime: 1.600000
+Process id:  12,	atime: 8.0000,	priority: 3,	totalRunTime: 8.800000
+Process id:  13,	atime: 12.0000,	priority: 2,	totalRunTime: 5.300000
+Process id:  14,	atime: 12.0000,	priority: 4,	totalRunTime: 8.600000
+Process id:  15,	atime: 15.0000,	priority: 1,	totalRunTime: 4.900000
+Process id:  16,	atime: 16.0000,	priority: 4,	totalRunTime: 1.700000
+Process id:  17,	atime: 16.0000,	priority: 4,	totalRunTime: 0.800000
+Process id:  18,	atime: 16.0000,	priority: 3,	totalRunTime: 1.000000
+Process id:  19,	atime: 16.0000,	priority: 4,	totalRunTime: 5.700000
+Process id:  20,	atime: 20.0000,	priority: 3,	totalRunTime: 2.900000
+Process id:  21,	atime: 21.0000,	priority: 3,	totalRunTime: 7.800000
+Process id:  22,	atime: 24.0000,	priority: 2,	totalRunTime: 5.600000
+Process id:  23,	atime: 27.0000,	priority: 2,	totalRunTime: 4.000000
+Process id:  24,	atime: 30.0000,	priority: 3,	totalRunTime: 2.100000
+1 was preempted by 2
+1 was preempted by 7
+
+Time chart:
+1 1 2 4 1 1 1 1 7 1 10 11 11 9 9 9 17 18 16 16 20 20 20 15 15 15 15 15 23 23 23 23 24 24 24 13 13 13 13 13 13 22 22 22 22 22 22 19 19 19 19 19 19 5 5 5 5 5 5 3 3 3 3 3 3 3 21 21 21 21 21 21 21 21 6 6 6 6 6 6 6 6 14 14 14 14 14 14 14 14 14 12 12 12 12 12 12 12 12 12 8 8 8 8 8 8 8 8 8 8 
+
+Stats for procs:
+Proc id:   2,	Turnaround time: 1.0000,	Waiting time: 0.0000	Response time 0.0000
+Proc id:   4,	Turnaround time: 1.0000,	Waiting time: 0.0000	Response time 0.0000
+Proc id:   7,	Turnaround time: 1.0000,	Waiting time: 0.0000	Response time 0.0000
+Proc id:   1,	Turnaround time: 12.0000,	Waiting time: 1.6667	Response time 0.0000
+Proc id:  10,	Turnaround time: 3.0000,	Waiting time: 2.0000	Response time 2.0000
+Proc id:  11,	Turnaround time: 5.0000,	Waiting time: 3.0000	Response time 3.0000
+Proc id:   9,	Turnaround time: 8.0000,	Waiting time: 5.0000	Response time 5.0000
+Proc id:  17,	Turnaround time: 1.0000,	Waiting time: 0.0000	Response time 0.0000
+Proc id:  18,	Turnaround time: 2.0000,	Waiting time: 1.0000	Response time 1.0000
+Proc id:  16,	Turnaround time: 4.0000,	Waiting time: 2.0000	Response time 2.0000
+Proc id:  20,	Turnaround time: 3.0000,	Waiting time: 0.0000	Response time 0.0000
+Proc id:  15,	Turnaround time: 13.0000,	Waiting time: 8.0000	Response time 8.0000
+Proc id:  23,	Turnaround time: 5.0000,	Waiting time: 1.0000	Response time 1.0000
+Proc id:  24,	Turnaround time: 5.0000,	Waiting time: 2.0000	Response time 2.0000
+Proc id:  13,	Turnaround time: 29.0000,	Waiting time: 23.0000	Response time 23.0000
+Proc id:  22,	Turnaround time: 23.0000,	Waiting time: 17.0000	Response time 17.0000
+Proc id:  19,	Turnaround time: 37.0000,	Waiting time: 31.0000	Response time 31.0000
+Proc id:   5,	Turnaround time: 56.0000,	Waiting time: 50.0000	Response time 50.0000
+Proc id:   3,	Turnaround time: 64.0000,	Waiting time: 57.0000	Response time 57.0000
+Proc id:  21,	Turnaround time: 53.0000,	Waiting time: 45.0000	Response time 45.0000
+Proc id:   6,	Turnaround time: 77.0000,	Waiting time: 69.0000	Response time 69.0000
+Proc id:  14,	Turnaround time: 79.0000,	Waiting time: 70.0000	Response time 70.0000
+Proc id:  12,	Turnaround time: 92.0000,	Waiting time: 83.0000	Response time 83.0000
+Proc id:   8,	Turnaround time: 102.0000,	Waiting time: 92.0000	Response time 92.0000
+Throughput: 0.2182 processes/quanta
+
