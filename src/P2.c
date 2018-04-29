@@ -34,7 +34,6 @@ Processes *getProcesses() {
     Processes *retval = (Processes *)malloc(sizeof(Processes));
     retval->procs = (ProcInfo *)malloc(MAX_PROCS*sizeof(ProcInfo));
     for(i = 0; i < MAX_PROCS && summedTotalRunTime < desiredQuanta; i++) {
-    //for(i = 0; i < MAX_PROCS; i++) {
         retval->procs[i].id = i+1;
         if(i == 0) {
             retval->procs[i].arrivalTime = 0;

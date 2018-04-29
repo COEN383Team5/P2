@@ -70,9 +70,10 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
             if(preemptive && curRun != NULL 
-                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
-                    && procCopy[nextProc].priority < curRun->priority
+                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+                && procCopy[nextProc].priority < curRun->priority
               ) {
+              // preempting
                 curRun->timesWaited++;
                 addToStack(preemptedProcs, curRun);
                 printf("%d was preempted by %d\n", curRun->id, procCopy[nextProc].id);
@@ -84,6 +85,7 @@ void doHPF(ProcInfo *procs, int numProcs, int preemptive, int aging) {
         }
         if(curRun == NULL) {
             if((temp = popStack(preemptedProcs)) != NULL) {
+                // run a preempted proc
                 curRun = temp;
                 temp = NULL;
             } else if((curRun = getNextProc(pq)) == NULL && curTime > desiredQuanta) {

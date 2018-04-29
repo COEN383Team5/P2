@@ -23,7 +23,7 @@ void doRR(ProcInfo *procs, int numProcs) {
     while(1) {
         if(curTime < desiredQuanta && nextProc < numProcs && procCopy[nextProc].arrivalTime <= curTime) {
             if(curRun != NULL 
-                    && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
+                && procCopy[nextProc].totalRunTime < curRun->totalRunTime-curRun->completedRunTime
               ) { 
               // preempting
                 curRun->timesWaited++;
@@ -36,7 +36,9 @@ void doRR(ProcInfo *procs, int numProcs) {
             }
         }
         if(curRun == NULL) {
+            // need to select a new process to run
             if((temp = popStack(preemptedProcs)) != NULL) {
+                // run the preempted procs
                 curRun = temp;
                 temp = NULL;
             } else if((curRun = pop(rrQ)) == NULL && curTime > desiredQuanta) {
