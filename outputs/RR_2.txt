@@ -1,0 +1,50 @@
+Starting first come first serve algorithm
+
+Process id:   1,	atime: 0.0000,	priority: 4,	totalRunTime: 1.800000
+Process id:   2,	atime: 0.0000,	priority: 3,	totalRunTime: 2.000000
+Process id:   3,	atime: 0.0000,	priority: 2,	totalRunTime: 6.700000
+Process id:   4,	atime: 3.0000,	priority: 3,	totalRunTime: 4.000000
+Process id:   5,	atime: 5.0000,	priority: 4,	totalRunTime: 5.200000
+Process id:   6,	atime: 6.0000,	priority: 2,	totalRunTime: 5.200000
+Process id:   7,	atime: 10.0000,	priority: 1,	totalRunTime: 0.600000
+Process id:   8,	atime: 10.0000,	priority: 2,	totalRunTime: 8.700000
+Process id:   9,	atime: 14.0000,	priority: 4,	totalRunTime: 9.200000
+Process id:  10,	atime: 17.0000,	priority: 2,	totalRunTime: 1.100000
+Process id:  11,	atime: 17.0000,	priority: 3,	totalRunTime: 0.800000
+Process id:  12,	atime: 17.0000,	priority: 3,	totalRunTime: 3.000000
+Process id:  13,	atime: 18.0000,	priority: 1,	totalRunTime: 9.900000
+Process id:  14,	atime: 26.0000,	priority: 4,	totalRunTime: 4.000000
+Process id:  15,	atime: 26.0000,	priority: 4,	totalRunTime: 1.100000
+Process id:  16,	atime: 26.0000,	priority: 3,	totalRunTime: 2.200000
+Process id:  17,	atime: 27.0000,	priority: 1,	totalRunTime: 9.700000
+Process id:  18,	atime: 32.0000,	priority: 3,	totalRunTime: 7.300000
+Process id:  19,	atime: 32.0000,	priority: 2,	totalRunTime: 9.300000
+Process id:  20,	atime: 36.0000,	priority: 4,	totalRunTime: 10.000000
+
+Time chart:
+1 1 2 3 2 4 3 2 5 4 6 3 5 4 7 6 8 3 5 4 9 6 8 10 3 11 5 12 4 13 9 6 8 10 3 14 5 15 12 16 17 13 9 6 18 8 19 3 14 20 5 15 12 16 17 13 9 6 18 8 19 14 20 12 16 17 13 9 18 8 19 14 20 17 13 9 18 8 19 14 20 17 13 9 18 8 19 20 17 13 9 18 8 19 20 17 13 9 18 19 20 17 13 9 18 19 20 17 13 19 20 17 19 20 20 
+
+Stats for procs:
+Proc id:   1	Turnaround time: 2.0000	Waiting time: 0.0000	Response time: 0.0000
+Proc id:   2	Turnaround time: 10.0000	Waiting time: 7.0000	Response time: 2.0000
+Proc id:   7	Turnaround time: 5.0000	Waiting time: 4.0000	Response time: 4.0000
+Proc id:  11	Turnaround time: 9.0000	Waiting time: 8.0000	Response time: 8.0000
+Proc id:   4	Turnaround time: 30.0000	Waiting time: 25.0000	Response time: 2.0000
+Proc id:  10	Turnaround time: 18.0000	Waiting time: 16.0000	Response time: 6.0000
+Proc id:   3	Turnaround time: 54.0000	Waiting time: 47.0000	Response time: 3.0000
+Proc id:   5	Turnaround time: 51.0000	Waiting time: 45.0000	Response time: 3.0000
+Proc id:  15	Turnaround time: 27.0000	Waiting time: 25.0000	Response time: 11.0000
+Proc id:   6	Turnaround time: 57.0000	Waiting time: 51.0000	Response time: 4.0000
+Proc id:  12	Turnaround time: 50.0000	Waiting time: 46.0000	Response time: 10.0000
+Proc id:  16	Turnaround time: 41.0000	Waiting time: 38.0000	Response time: 13.0000
+Proc id:  14	Turnaround time: 58.0000	Waiting time: 53.0000	Response time: 9.0000
+Proc id:   8	Turnaround time: 91.0000	Waiting time: 82.0000	Response time: 6.0000
+Proc id:   9	Turnaround time: 99.0000	Waiting time: 89.0000	Response time: 6.0000
+Proc id:  18	Turnaround time: 80.0000	Waiting time: 72.0000	Response time: 12.0000
+Proc id:  13	Turnaround time: 100.0000	Waiting time: 90.0000	Response time: 11.0000
+Proc id:  17	Turnaround time: 94.0000	Waiting time: 84.0000	Response time: 13.0000
+Proc id:  19	Turnaround time: 90.0000	Waiting time: 80.0000	Response time: 14.0000
+Proc id:  20	Turnaround time: 88.0000	Waiting time: 77.0000	Response time: 13.0000
+Average Turnaround time: 52.7000	Average Waiting time: 46.9500	Average Response time: 7.5000
+Throughput: 0.1739 processes/quanta
+
